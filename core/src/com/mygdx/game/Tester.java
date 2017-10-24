@@ -27,7 +27,6 @@ public class Tester implements ApplicationListener {
     OrthographicCamera camera;
     FitViewport viewPort;
 
-    BitmapFont font;
 
     //アニメーション画像
     private Animation animLeft;
@@ -83,7 +82,6 @@ public class Tester implements ApplicationListener {
     @Override
     public void create() {
         batch = new SpriteBatch();
-        font = new BitmapFont();
 
         charaImage = new Texture(Gdx.files.internal("reimu.png"));
 
@@ -182,25 +180,25 @@ public class Tester implements ApplicationListener {
 
     public void move() {
         //斜め方向
-        if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && Gdx.input.isKeyPressed(Input.Keys.UP)) {
             leftUp();
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) && Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+        } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && Gdx.input.isKeyPressed(Input.Keys.UP)) {
             rightUp();
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
+        } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             leftDown();
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) && Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
+        } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             rightDown();
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
+        } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             left();
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
+        } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             right();
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+        } else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             up();
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
+        } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             down();
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.Z)) {
+        } else if (Gdx.input.isKeyPressed(Input.Keys.Z)) {
             attack();
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+        } else if (Gdx.input.isKeyPressed(Input.Keys.R)) {
             reset();
         }
     }
@@ -238,6 +236,8 @@ public class Tester implements ApplicationListener {
     }
 
     private void update() {
+        state = STATE_IDLE;
+
         float deltaTime = Gdx.graphics.getDeltaTime();
         imageStateTime += deltaTime;
     }
@@ -313,38 +313,12 @@ public class Tester implements ApplicationListener {
     }
 
     private void positionMove(int direction, float dx, float dy) {
-        MOVE_FLAG = true;
-        dir = direction;
+//        MOVE_FLAG = true;
         state = STATE_MOVE;
+        dir = direction;
 
-        moveX = dx;
-        moveY = dy;
-
-        if (moveX != 0 || moveY != 0) {
-            if (moveX > 0) {
-                charaPos.x++;
-                moveX--;
-            } else if (moveX < 0){
-                charaPos.x--;
-                moveX++;
-            }
-
-            if (moveY > 0) {
-                charaPos.y++;
-                moveY--;
-            } else if (moveY < 0){
-                charaPos.y--;
-                moveY++;
-            }
-            System.out.println("xPOS:" + moveX + "yPOS:" + moveY);
-        } else {
-            MOVE_FLAG = false;
-            state = STATE_IDLE;
-        }
-
-        System.out.println("nowState:" + state + "FLAG:" + MOVE_FLAG);
-//        charaPos.x += dx;
-//        charaPos.y += dy;
+        charaPos.x += dx;
+        charaPos.y += dy;
 
     }
 }
