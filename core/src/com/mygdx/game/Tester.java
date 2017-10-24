@@ -3,13 +3,11 @@ package com.mygdx.game;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -28,6 +26,8 @@ public class Tester implements ApplicationListener {
     //カメラ
     OrthographicCamera camera;
     FitViewport viewPort;
+
+    BitmapFont font;
 
     //アニメーション画像
     private Animation animLeft;
@@ -68,15 +68,22 @@ public class Tester implements ApplicationListener {
 
     private int state;
     private int dir;
+    private float moveX;
+    private float moveY;
 
-    private static final float MOVE_SPEED = 64 * 3.0f / 60;
+//    private static final float MOVE_SPEED = 64 * 3.0f / 60;
+    private static final float MOVE_SPEED = 5;
     private static final float DIAGONAL = MOVE_SPEED * 0.7071f;
 
-    private int KEY_FLAG = 0;
+    private boolean KEY_FLAG = false;
+    private boolean ATTACK_FLAG = false;
+    private boolean MOVE_FLAG = false;
+
 
     @Override
     public void create() {
         batch = new SpriteBatch();
+        font = new BitmapFont();
 
         charaImage = new Texture(Gdx.files.internal("reimu.png"));
 
@@ -132,29 +139,26 @@ public class Tester implements ApplicationListener {
 
         update();
         move();
+        Animation charaAnim = currentAnim();
 
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.update();
         batch.setProjectionMatrix(camera.combined);
-
         batch.begin();
 
         boolean loop = true;
         float width = 32;
         float height = 48;
 
-        Animation charaAnim = currentAnim();
         batch.draw((TextureRegion) charaAnim.getKeyFrame(imageStateTime, loop),
                 charaPos.x, charaPos.y,
                 width, height);
 
-
 //        chara.draw(batch);
 //        batch.draw(charaImage, 0, 0);
         batch.end();
-
     }
 
     @Override
@@ -175,77 +179,74 @@ public class Tester implements ApplicationListener {
     }
 
 
+
     public void move() {
         //斜め方向
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
             leftUp();
-        } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && Gdx.input.isKeyPressed(Input.Keys.UP)) {
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) && Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
             rightUp();
-        } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
             leftDown();
-        } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) && Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
             rightDown();
-        } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
             left();
-        } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
             right();
-        } else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
             up();
-        } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
             down();
-        } else if (Gdx.input.isKeyPressed(Input.Keys.R)) {
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.Z)) {
+            attack();
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
             reset();
         }
-
     }
 
     private void left() {
         positionMove(DIR_LEFT, -MOVE_SPEED, 0);
     }
-
     private void right() {
         positionMove(DIR_RIGHT, MOVE_SPEED, 0);
     }
-
     private void up() {
         positionMove(DIR_UP, 0, MOVE_SPEED);
     }
-
     private void down() {
         positionMove(DIR_DOWN, 0, -MOVE_SPEED);
     }
-
     private void leftUp() {
         positionMove(DIR_LUP, -DIAGONAL, DIAGONAL);
     }
-
     private void rightUp() {
         positionMove(DIR_RUP, DIAGONAL, DIAGONAL);
     }
-
     private void leftDown() {
         positionMove(DIR_LDOWN, -DIAGONAL, -DIAGONAL);
     }
-
     private void rightDown() {
         positionMove(DIR_RDOWN, DIAGONAL, -DIAGONAL);
+    }
+    private void reset() {
+        charaPos.set(0, 0);
+    }
+
+    private void attack() {
+        //TODO 攻撃
     }
 
     private void update() {
         float deltaTime = Gdx.graphics.getDeltaTime();
-
-        state = STATE_IDLE;
-        KEY_FLAG = 0;
         imageStateTime += deltaTime;
     }
-
     //移動アニメーション
+
     private Animation currentAnim() {
         Animation anim = null;
 
         if (state == STATE_MOVE) {
-            KEY_FLAG = 1;
-
             switch (dir) {
                 case DIR_LUP:
                     anim = animLeftUp;
@@ -311,14 +312,47 @@ public class Tester implements ApplicationListener {
         return anim;
     }
 
-    private void reset() {
-        charaPos.set(0, 0);
-    }
-
     private void positionMove(int direction, float dx, float dy) {
+        MOVE_FLAG = true;
         dir = direction;
-        charaPos.x += dx;
-        charaPos.y += dy;
         state = STATE_MOVE;
+
+        moveX = dx;
+        moveY = dy;
+
+        if (moveX != 0 || moveY != 0) {
+            if (moveX > 0) {
+                charaPos.x++;
+                moveX--;
+            } else if (moveX < 0){
+                charaPos.x--;
+                moveX++;
+            }
+
+            if (moveY > 0) {
+                charaPos.y++;
+                moveY--;
+            } else if (moveY < 0){
+                charaPos.y--;
+                moveY++;
+            }
+            System.out.println("xPOS:" + moveX + "yPOS:" + moveY);
+        } else {
+            MOVE_FLAG = false;
+            state = STATE_IDLE;
+        }
+
+        System.out.println("nowState:" + state + "FLAG:" + MOVE_FLAG);
+//        charaPos.x += dx;
+//        charaPos.y += dy;
+
     }
 }
+
+
+
+/**
+ * マスアニメーション（現状は毎フレーム移動）
+ * キャラの攻撃モーション
+ * 不思議ダンジョン生成（アルゴリズム）
+ **/
