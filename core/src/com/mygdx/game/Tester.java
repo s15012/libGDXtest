@@ -8,8 +8,19 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapLayers;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapImageLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+
+import java.awt.*;
+import java.io.Console;
 
 /**
  * Created by s15012 on 17/10/12.
@@ -21,7 +32,9 @@ public class Tester implements ApplicationListener {
     //キャラ構成
     Texture charaImage;
     Sprite chara;
+    Sprite bg;
     Vector2 charaPos;
+    Vector2 targetPos;
 
     //カメラ
     OrthographicCamera camera;
@@ -67,23 +80,20 @@ public class Tester implements ApplicationListener {
 
     private int state;
     private int dir;
-    private float moveX;
-    private float moveY;
+    private float moveX = 32;
+    private float moveY = 32;
 
 //    private static final float MOVE_SPEED = 64 * 3.0f / 60;
-    private static final float MOVE_SPEED = 5;
+    private static final float MOVE_SPEED = 1;
     private static final float DIAGONAL = MOVE_SPEED * 0.7071f;
 
-    private boolean KEY_FLAG = false;
-    private boolean ATTACK_FLAG = false;
-    private boolean MOVE_FLAG = false;
-
+    World world;
+    private TiledMapRenderer renderer;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
-
-        charaImage = new Texture(Gdx.files.internal("reimu.png"));
+        charaImage = new Texture(Gdx.files.internal("android/assets/reimu.png"));
 
         TextureRegion[][] tmp = TextureRegion.split(charaImage, charaImage.getWidth() / 6, charaImage.getHeight() / 4);
         TextureRegion[] split = new TextureRegion[IMAGE_COLS * IMAGE_ROWS];
@@ -95,15 +105,15 @@ public class Tester implements ApplicationListener {
             }
         }
 
-        animRight = new Animation(0.1f, split[12], split[13], split[14]);
-        animLeft = new Animation(0.1f, split[6], split[7], split[8]);
-        animUp = new Animation(0.1f, split[18], split[19], split[20]);
-        animDown = new Animation(0.1f, split[0], split[1], split[2]);
+        animRight = new Animation(0.2f, split[12], split[13], split[14]);
+        animLeft = new Animation(0.2f, split[6], split[7], split[8]);
+        animUp = new Animation(0.2f, split[18], split[19], split[20]);
+        animDown = new Animation(0.2f, split[0], split[1], split[2]);
 
-        animRightUp = new Animation(0.1f, split[21], split[22], split[23]);
-        animRightDown = new Animation(0.1f, split[9], split[10], split[11]);
-        animLeftDown = new Animation(0.1f, split[3], split[4], split[5]);
-        animLeftUp = new Animation(0.1f, split[15], split[16], split[17]);
+        animRightUp = new Animation(0.2f, split[21], split[22], split[23]);
+        animRightDown = new Animation(0.2f, split[9], split[10], split[11]);
+        animLeftDown = new Animation(0.2f, split[3], split[4], split[5]);
+        animLeftUp = new Animation(0.2f, split[15], split[16], split[17]);
 
 
         animIdleRight = new Animation(0.5f, split[13]);
@@ -116,24 +126,26 @@ public class Tester implements ApplicationListener {
         animIdleLeftDown = new Animation(0.5f, split[4]);
         animIdleLeftUp = new Animation(0.5f, split[16]);
 
+        world = new World();
         chara = new Sprite(charaImage);
+//        bg = new Sprite(world.tile);
         charaPos = new Vector2();
+        targetPos = new Vector2();
 
-        camera = new OrthographicCamera(600, 480);
+        camera = new OrthographicCamera(120, 120);
         camera.setToOrtho(false, 600, 480);
         viewPort = new FitViewport(600, 480, camera);
-
+        createDemo();
 
     }
 
     @Override
     public void resize(int width, int height) {
         viewPort.update(width, height);
-
     }
 
     @Override
-    public void render() {
+    public void render(){
 
         update();
         move();
@@ -143,6 +155,10 @@ public class Tester implements ApplicationListener {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.update();
+        camera.position.x = charaPos.x;
+        camera.position.y = charaPos.y;
+        renderer.setView(camera);
+
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
 
@@ -150,13 +166,12 @@ public class Tester implements ApplicationListener {
         float width = 32;
         float height = 48;
 
+//        bg.draw(batch);
         batch.draw((TextureRegion) charaAnim.getKeyFrame(imageStateTime, loop),
                 charaPos.x, charaPos.y,
                 width, height);
-
-//        chara.draw(batch);
-//        batch.draw(charaImage, 0, 0);
         batch.end();
+        renderer.render();
     }
 
     @Override
@@ -201,6 +216,22 @@ public class Tester implements ApplicationListener {
         } else if (Gdx.input.isKeyPressed(Input.Keys.R)) {
             reset();
         }
+
+        if (charaPos.x < targetPos.x) {
+            charaPos.x++;
+        } else if (charaPos.x > targetPos.x) {
+            charaPos.x--;
+        }
+
+        if (charaPos.y < targetPos.y) {
+            charaPos.y++;
+        } else if (charaPos.y > targetPos.y){
+            charaPos.y--;
+        }
+
+        if (charaPos.x == targetPos.x && charaPos.y == targetPos.y) {
+            state = STATE_IDLE;
+        }
     }
 
     private void left() {
@@ -236,9 +267,9 @@ public class Tester implements ApplicationListener {
     }
 
     private void update() {
-        state = STATE_IDLE;
 
         float deltaTime = Gdx.graphics.getDeltaTime();
+
         imageStateTime += deltaTime;
     }
     //移動アニメーション
@@ -317,16 +348,33 @@ public class Tester implements ApplicationListener {
         state = STATE_MOVE;
         dir = direction;
 
-        charaPos.x += dx;
-        charaPos.y += dy;
+        targetPos.x = charaPos.x + moveX * dx;
+        targetPos.y = charaPos.y + moveY * dy;
 
     }
+
+    private void createDemo() {
+        TiledMap map = new TiledMap();
+        MapLayers layers = new MapLayers();
+        TiledMapTileLayer tiledMapTileLayer = new TiledMapTileLayer (32, 32,32,32);
+        for (int x = 0; x < 32; x++) {
+            for (int y = 0; y < 32; y++) {
+                TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
+                cell.setTile(new com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile(new TextureRegion(world.tile)));
+                tiledMapTileLayer.setCell(x, y, cell);
+            }
+        }
+        layers.add(tiledMapTileLayer);
+        renderer = new OrthogonalTiledMapRenderer(map);
+    }
+
 }
 
 
 
 /**
- * マスアニメーション（現状は毎フレーム移動）
+ * (OK)マスアニメーション（現状は毎フレーム移動）
+ * MAP生成
  * キャラの攻撃モーション
  * 不思議ダンジョン生成（アルゴリズム）
  **/
