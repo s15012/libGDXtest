@@ -1,47 +1,22 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.maps.MapLayers;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 
-/**
- * Created by s15012 on 17/10/12.
- */
-public class Tester implements ApplicationListener {
 
-//    public static final String LOG_TAG = .class.getSimpleName();
-
-    //Display
-    private int LOGICAL_WIDTH = 512;
-    private int LOGICAL_HEIGHT = 288;
-
-    //drawerBatch
-    SpriteBatch batch;
+public class Character {
 
     //Chara
-    Texture charaImage;
-    Sprite chara;
-    Vector2 charaPos;
-    Vector2 targetPos;
-
-    //touchPanel
-    Texture touchPanelImage;
-
-    //カメラ
-    OrthographicCamera camera;
-    FitViewport viewPort;
+    Texture image;
+    Sprite sprite;
+    Vector2 current;
+    Vector2 target;
 
     //MoveAnimationTexture
     private Animation animLeft;
@@ -62,9 +37,9 @@ public class Tester implements ApplicationListener {
     private Animation animIdleLeftDown;
     private Animation animIdleRightDown;
 
+
     private static final int IMAGE_COLS = 6;
     private static final int IMAGE_ROWS = 4;
-    private float imageStateTime = 0;
 
     enum Dirs { //向き
         DIR_RIGHT,
@@ -92,28 +67,9 @@ public class Tester implements ApplicationListener {
     private static final float MOVE_SPEED = 1;
     private static final float DIAGONAL = MOVE_SPEED * 0.7071f;
 
-    //WorldBlocks
-    private World world;
-//    public TiledMapRenderer renderer;
-
-//    private Sprite leftButton;
-//    private Sprite leftUpButton;
-//    private Sprite leftDownButton;
-//    private Sprite rightButton;
-//    private Sprite rightUpButton;
-//    private Sprite rightDownButton;
-//    private Sprite upButton;
-//    private Sprite downButton;
-
-    @Override
-    public void create() {
-        batch = new SpriteBatch();
-
-        touchPanelImage = new Texture(Gdx.files.internal("android/assets/touchPanel.png"));
-        TextureRegion[][] touchPanel = TextureRegion.split(touchPanelImage, touchPanelImage.getWidth() / 3, touchPanelImage.getHeight() / 3);
-
-        charaImage = new Texture(Gdx.files.internal("android/assets/reimu.png"));
-        TextureRegion[][] tmp = TextureRegion.split(charaImage, charaImage.getWidth() / 6, charaImage.getHeight() / 4);
+    Character() {
+        image = new Texture(Gdx.files.internal("reimu.png"));
+        TextureRegion[][] tmp = TextureRegion.split(image, image.getWidth() / 6, image.getHeight() / 4);
         TextureRegion[] split = new TextureRegion[IMAGE_COLS * IMAGE_ROWS];
         int index = 0;
 
@@ -142,86 +98,22 @@ public class Tester implements ApplicationListener {
         animIdleLeftDown = new Animation(0.5f, split[4]);
         animIdleLeftUp = new Animation(0.5f, split[16]);
 
-//        leftButton = new Sprite(touchPanelImage, 0, 32, 32, 32);
-//        leftButton.setPosition(0, 0);
-//        leftUpButton = new Sprite(touchSplit[0]);
-//        leftUpButton.setPosition(0, 64);
-//        leftDownButton = new Sprite(touchSplit[6]);
-//        leftDownButton.setPosition(0, 0);
-//        rightButton = new Sprite(touchSplit[5]);
-//        rightUpButton = new Sprite(touchSplit[2]);
-//        rightDownButton = new Sprite(touchSplit[8]);
-//        upButton = new Sprite(touchSplit[1]);
-//        downButton = new Sprite(touchSplit[7]);
+        sprite = new Sprite(image);
+        current = new Vector2();
+        target = new Vector2();
+        float w = Gdx.graphics.getWidth();
+        float h = Gdx.graphics.getHeight();
 
-        chara = new Sprite(charaImage);
-        charaPos = new Vector2();
-        targetPos = new Vector2();
+        current.x = 220 / 2;
+        current.y = 220 / 2;
 
-        camera = new OrthographicCamera(LOGICAL_WIDTH, LOGICAL_HEIGHT);
-        camera.setToOrtho(false, LOGICAL_WIDTH, LOGICAL_HEIGHT);
-        viewPort = new FitViewport(LOGICAL_WIDTH, LOGICAL_HEIGHT, camera);
-
-        world = new World();
-        world.createDemo();
+        target.x = current.x;
+        target.y = current.y;
     }
 
-    @Override
-    public void resize(int width, int height) {
-        viewPort.update(width, height);
+    public Vector2 getCurrentPosition() {
+        return current;
     }
-
-    @Override
-    public void render() {
-
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        update();
-
-        touchMove();
-        move();
-
-        Animation charaAnim = currentAnim();
-
-        //camera キャラ追尾
-        camera.update();
-        camera.position.x = charaPos.x;
-        camera.position.y = charaPos.y;
-
-        //WorldBlock Renderer
-        world.renderer.setView(camera);
-        world.renderer.render();
-
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-
-        boolean loop = true;
-        float width = 32;
-        float height = 48;
-        batch.draw((TextureRegion) charaAnim.getKeyFrame(imageStateTime, loop),
-                charaPos.x, charaPos.y,
-                width, height);
-
-        batch.end();
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void dispose() {
-        charaImage.dispose();
-        batch.dispose();
-    }
-
 
 
     public void move() {
@@ -248,58 +140,65 @@ public class Tester implements ApplicationListener {
             reset();
         }
 
-        if (charaPos.x < targetPos.x) {
-            charaPos.x++;
-        } else if (charaPos.x > targetPos.x) {
-            charaPos.x--;
+        if (current.x < target.x) {
+            current.x++;
+        } else if (current.x > target.x) {
+            current.x--;
         }
 
-        if (charaPos.y < targetPos.y) {
-            charaPos.y++;
-        } else if (charaPos.y > targetPos.y){
-            charaPos.y--;
+        if (current.y < target.y) {
+            current.y++;
+        } else if (current.y > target.y) {
+            current.y--;
         }
 
-        if (charaPos.x == targetPos.x && charaPos.y == targetPos.y) {
+        if (current.x == target.x && current.y == target.y) {
             state = State.IDLE;
         }
     }
+
     private void left() {
         positionMove(Dirs.DIR_LEFT, -MOVE_SPEED, 0);
     }
+
     private void right() {
         positionMove(Dirs.DIR_RIGHT, MOVE_SPEED, 0);
     }
+
     private void up() {
         positionMove(Dirs.DIR_UP, 0, MOVE_SPEED);
     }
+
     private void down() {
         positionMove(Dirs.DIR_DOWN, 0, -MOVE_SPEED);
     }
+
     private void leftUp() {
         positionMove(Dirs.DIR_LUP, -DIAGONAL, DIAGONAL);
     }
+
     private void rightUp() {
         positionMove(Dirs.DIR_RUP, DIAGONAL, DIAGONAL);
     }
+
     private void leftDown() {
         positionMove(Dirs.DIR_LDOWN, -DIAGONAL, -DIAGONAL);
     }
+
     private void rightDown() {
         positionMove(Dirs.DIR_RDOWN, DIAGONAL, -DIAGONAL);
     }
+
     private void reset() {
-        charaPos.set(0, 0);
+        current.set(0, 0);
     }
 
-//    private void attack() {
-//        //TODO 攻撃
-//    }
-
-    private void update() {
-
-        float deltaTime = Gdx.graphics.getDeltaTime();
-        imageStateTime += deltaTime;
+    public void draw(Batch batch, float imageStateTime) {
+        float width = 32;
+        float height = 48;
+        batch.draw((TextureRegion) currentAnim().getKeyFrame(imageStateTime, true),
+                current.x, current.y,
+                width, height);
     }
 
     private Animation currentAnim() {
@@ -375,54 +274,7 @@ public class Tester implements ApplicationListener {
         state = State.MOVE;
         dir = direction;
 
-        targetPos.x = charaPos.x + moveX * dx;
-        targetPos.y = charaPos.y + moveY * dy;
+        target.x = current.x + moveX * dx;
+        target.y = current.y + moveY * dy;
     }
-
-//    private void createDemo() {
-//        int[][] maps = new int[8][8];
-//
-//        for(int x = 0; x < 8; x++) {
-//            for (int y = 0; y < 8; y++) {
-//                int a = (int) (Math.random() * 10);
-//                if (a > 4) {
-//                    maps[x][y] = 0;
-//                } else {
-//                    maps[x][y] = 1;
-//                }
-//                System.out.println(maps[x][y]);
-//            }
-//        }
-//
-//        TiledMap map = new TiledMap();
-//        MapLayers layers = map.getLayers();
-//        TiledMapTileLayer tiledMapTileLayer = new TiledMapTileLayer (32, 32,32,32);
-//
-//        for (int x = 0; x < 8; x++) {
-//            for (int y = 0; y < 8; y++) {
-//                if (maps[x][y] == 1) {
-//                    System.out.println("設置OK");
-//                    TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
-//                    cell.setTile(new com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile(new TextureRegion(world.tile)));
-//                    tiledMapTileLayer.setCell(x, y, cell);
-//                }
-////                Gdx.app.debug(LOG_TAG, "地面MAPを設置しました。　Xpos:" + x + " Ypos:" + y);
-//            }
-//        }
-//
-//        layers.add(tiledMapTileLayer);
-//
-//        renderer = new OrthogonalTiledMapRenderer(map);
-//    }
-
-    private void touchMove() {
-    }
-
 }
-
-/**
- * (OK)マスアニメーション（現状は毎フレーム移動）
- * (画像表示はOK)MAP生成
- * キャラの攻撃モーション
- * 不思議ダンジョン生成（アルゴリズム）
- **/
