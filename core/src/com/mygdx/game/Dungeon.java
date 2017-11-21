@@ -38,13 +38,13 @@ public class Dungeon extends ScreenAdapter {
         camera.setToOrtho(false, w / h, 1);
         viewPort = new FitViewport(220 * w / h, 220, camera);
         create();
+        inputController.makePanel();
     }
 
 
     private void create() {
         blocks.makeMaps();
         createDungeonMap();
-        inputController.makePanel();
     }
 
     @Override
@@ -70,6 +70,7 @@ public class Dungeon extends ScreenAdapter {
         batch.begin();
 
         character.draw(batch, imageStateTime);
+        inputController.draw(batch);
 
         batch.end();
     }
