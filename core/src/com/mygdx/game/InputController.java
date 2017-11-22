@@ -61,7 +61,6 @@ public class InputController implements InputProcessor {
 
         rightDownButton = new Sprite(touchPanel[2][2]);
         rightDownButton.setBounds(downButton.getX() + PANEL_SIZE, downButton.getY(), PANEL_SIZE, PANEL_SIZE);
-
     }
 
     public void draw(Batch batch) {
@@ -74,6 +73,39 @@ public class InputController implements InputProcessor {
         leftDownButton.draw(batch);
         downButton.draw(batch);
         rightDownButton.draw(batch);
+    }
+
+    private void touchEvent() {
+        if (Gdx.input.isTouched()) {
+            if (leftUpButton.getBoundingRectangle().contains(Gdx.input.getX(), Gdx.input.getY())) {
+                Gdx.app.log("MyTag","leftUpButton(左上) is touched");
+
+            } else if (upButton.getBoundingRectangle().contains(Gdx.input.getX(), Gdx.input.getY())) {
+                Gdx.app.log("MyTag","UpButton(上) is touched");
+
+            } else if (rightUpButton.getBoundingRectangle().contains(Gdx.input.getX(), Gdx.input.getY())) {
+                Gdx.app.log("MyTag","rightUpButton(右上) is touched");
+
+            } else if (leftButton.getBoundingRectangle().contains(Gdx.input.getX(), Gdx.input.getY())) {
+                Gdx.app.log("MyTag","leftButton(左) is touched");
+
+            } else if (rect.getBoundingRectangle().contains(Gdx.input.getX(), Gdx.input.getY())) {
+                Gdx.app.log("MyTag","RECT(中) is touched");
+
+            } else if (rightButton.getBoundingRectangle().contains(Gdx.input.getX(), Gdx.input.getY())) {
+                Gdx.app.log("MyTag","rightButton(右) is touched");
+
+            } else if (leftDownButton.getBoundingRectangle().contains(Gdx.input.getX(), Gdx.input.getY())) {
+                Gdx.app.log("MyTag","leftDownButton(左下) is touched");
+
+            } else if (downButton.getBoundingRectangle().contains(Gdx.input.getX(), Gdx.input.getY())) {
+                Gdx.app.log("MyTag","downButton(下) is touched");
+
+            } else if (rightDownButton.getBoundingRectangle().contains(Gdx.input.getX(), Gdx.input.getY())) {
+                Gdx.app.log("MyTag","rightDownButton(右下) is touched");
+
+            }
+        }
     }
 
     @Override
@@ -94,8 +126,7 @@ public class InputController implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
-        if (Gdx.input.isTouched()) {
-        }
+        touchEvent();
 
         return false;
     }

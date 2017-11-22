@@ -157,7 +157,7 @@ public class Character {
         }
     }
 
-    public void left() {
+    private void left() {
         positionMove(Dirs.DIR_LEFT, -MOVE_SPEED, 0);
     }
 
