@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayers;
@@ -12,11 +13,15 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.mygdx.game.hud.HUD;
+import com.mygdx.game.hud.InputController;
+import com.mygdx.game.objects.Character;
+import com.mygdx.game.objects.DungeonObject;
 
 
-public class Dungeon extends ScreenAdapter {
+public class Dungeon extends ScreenAdapter implements InputController.InputListener {
 
-    InputController inputController = new InputController();
+    HUD hud = new HUD();
 
     SpriteBatch batch;
     OrthographicCamera camera;
@@ -36,15 +41,17 @@ public class Dungeon extends ScreenAdapter {
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, w / h, 1);
-        viewPort = new FitViewport(220 * w / h, 220, camera);
+        viewPort = new FitViewport(240 * w / h, 240, camera);
         create();
-        inputController.makePanel();
     }
 
 
     private void create() {
         blocks.makeMaps();
         createDungeonMap();
+        InputController inputController = new InputController(this);
+        inputController.makePanel();
+        hud.addComponent(inputController);
     }
 
     @Override
@@ -62,17 +69,23 @@ public class Dungeon extends ScreenAdapter {
         viewPort.update(width, height);
     }
 
+    @Override
+    public void dispose() {
+        super.dispose();
+        hud.dispose();
+        character.dispose();
+    }
+
     private void draw() {
         renderer.setView(camera);
         renderer.render();
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-
         character.draw(batch, imageStateTime);
-        inputController.draw(batch);
-
         batch.end();
+        hud.draw(batch, imageStateTime);
+
     }
 
     private void updateCamera() {
@@ -101,18 +114,30 @@ public class Dungeon extends ScreenAdapter {
         TiledMapTileLayer tiledMapTileLayer = new TiledMapTileLayer(32, 32, 32, 32);
         int widthCount = blocks.getWidthBlockCount();
         int heightCount = blocks.getHeightBlockCount();
-        TextureRegion tile = Resources.Textures.getFloorTextureRegion();
+//        Texture tile = Resources.Textures.floor;
         for (int x = 0; x < widthCount; x++) {
             for (int y = 0; y < heightCount; y++) {
-                if (blocks.getObjectType(x, y) == 1) {
-                    TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
-                    cell.setTile(new com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile(new TextureRegion(tile)));
-                    tiledMapTileLayer.setCell(x, y, cell);
-                }
+                DungeonObject object = blocks.getObjectType(x, y);
+                TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
+                cell.setTile(new com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile(new TextureRegion(object.getImage())));
+                tiledMapTileLayer.setCell(x, y, cell);
             }
         }
         layers.add(tiledMapTileLayer);
         renderer = new OrthogonalTiledMapRenderer(map);
     }
 
+    @Override
+    public void onTouchDown(Direction direction) {
+        character.setMoveDirection(direction);
+    }
+
+    @Override
+    public void onTouchUp(Direction direction) {
+    }
+
+    @Override
+    public void onTouchMove(Direction direction) {
+        character.setMoveDirection(direction);
+    }
 }

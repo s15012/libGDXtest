@@ -9,15 +9,7 @@ public class Resources {
 
     public static class Textures {
         public static Texture floor = new Texture(Gdx.files.internal("blocks.png"));
-        private static TextureRegion floorTextureRegion;
-
-        public static TextureRegion getFloorTextureRegion() {
-            if (floorTextureRegion == null) {
-                TextureRegion[][] tmp = TextureRegion.split(floor, floor.getWidth() / 10, floor.getHeight() / 8);
-                floorTextureRegion = tmp[4][0];
-            }
-            return floorTextureRegion;
-        }
+        public static Texture obstacle = new Texture(Gdx.files.internal("obstacle.png"));
     }
 
 
