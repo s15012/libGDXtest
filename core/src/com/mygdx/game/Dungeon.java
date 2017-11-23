@@ -17,7 +17,6 @@ import com.mygdx.game.hud.InputController;
 import com.mygdx.game.objects.Character;
 import com.mygdx.game.objects.DungeonObject;
 
-
 public class Dungeon extends ScreenAdapter implements InputController.InputListener {
 
     HUD hud = new HUD();

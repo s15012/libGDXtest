@@ -3,9 +3,6 @@ package com.mygdx.game.objects;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.mygdx.game.Resources;
 
-/**
- * Created by arakaki on 2017/11/23.
- */
 
 public class GlassTile extends DungeonObject {
 

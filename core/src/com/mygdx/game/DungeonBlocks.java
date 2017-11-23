@@ -7,8 +7,8 @@ import com.mygdx.game.objects.GlassTile;
 
 public class DungeonBlocks {
 
-    private int widthBlocks = 10;
-    private int heightBlocks = 10;
+    private int widthBlocks = 100;
+    private int heightBlocks = 100;
 
     DungeonObject[][] maps;
 
