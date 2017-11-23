@@ -7,7 +7,7 @@ import com.mygdx.game.DrawComponent;
 
 public abstract class DungeonObject implements DrawComponent {
 
-    boolean isBlock = true;
+    boolean isBlock = false;
 
     public Texture getImage() {
         return image;

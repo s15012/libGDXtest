@@ -9,8 +9,10 @@ import com.mygdx.game.Resources;
 
 public class GlassObstacle extends DungeonObject {
 
-    public GlassObstacle() {
+    public GlassObstacle(float x, float y) {
         image = Resources.Textures.obstacle;
+        initPosition(x, y);
+        isBlock = true;
     }
 
     @Override

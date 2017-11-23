@@ -1,11 +1,22 @@
 package com.mygdx.game.objects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Direction;
+import com.mygdx.game.DungeonBlocks;
 
 public abstract class MovableDungeonObject extends AnimatableDungeonObject {
 
+    public DungeonBlocks getDungeonBlocks() {
+        return dungeonBlocks;
+    }
+
+    public void setDungeonBlocks(DungeonBlocks dungeonBlocks) {
+        this.dungeonBlocks = dungeonBlocks;
+    }
+
+    DungeonBlocks dungeonBlocks;
     Animations moveAnimation = new Animations();
     Vector2 target = new Vector2();
 
@@ -41,8 +52,20 @@ public abstract class MovableDungeonObject extends AnimatableDungeonObject {
         state = State.MOVE;
         this.direction = direction;
 
-        target.x = (float) Math.floor(current.x + moveX * dx);
-        target.y = (float) Math.floor(current.y + moveY * dy);
+        int blockX = (int) (current.x / 32);
+        int blockY = (int) (current.y / 32);
+
+        DungeonObject nextTile = dungeonBlocks.getObjectType(blockX + (int) dx, blockY + (int) dy);
+        if (nextTile == null) {
+            return;
+        }
+        if (nextTile.isBlock) {
+            return;
+        }
+        target.x = (float) Math.floor(nextTile.current.x);
+        target.y = (float) Math.floor(nextTile.current.y);
+        Vector2 tmp = new Vector2(blockX, blockY);
+        Gdx.app.log("POSITION", tmp.toString() + ":" + target.toString());
     }
 
     public void move() {
@@ -59,7 +82,7 @@ public abstract class MovableDungeonObject extends AnimatableDungeonObject {
                 current.y--;
             }
 
-            if ((long)current.x == (long)target.x && (long)current.y == (long)target.y) {
+            if ((long) current.x == (long) target.x && (long) current.y == (long) target.y) {
                 state = State.IDLE;
             }
         }

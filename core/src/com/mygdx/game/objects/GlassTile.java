@@ -1,7 +1,5 @@
 package com.mygdx.game.objects;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.mygdx.game.Resources;
 
@@ -11,8 +9,9 @@ import com.mygdx.game.Resources;
 
 public class GlassTile extends DungeonObject {
 
-    public GlassTile() {
+    public GlassTile(float x, float y) {
         image = Resources.Textures.floor;
+        initPosition(x, y);
     }
 
     @Override
