@@ -31,6 +31,8 @@ public abstract class MovableDungeonObject extends AnimatableDungeonObject {
     private float moveX = 32;
     private float moveY = 32;
 
+    public static Direction moveDirection;
+
     @Override
     public void initPosition(float x, float y) {
         super.initPosition(x, y);
@@ -51,21 +53,20 @@ public abstract class MovableDungeonObject extends AnimatableDungeonObject {
     protected void positionMove(Direction direction, float dx, float dy) {
         state = State.MOVE;
         this.direction = direction;
+        moveDirection = direction;
 
-        int blockX = (int) (current.x / 32);
-        int blockY = (int) (current.y / 32);
+        int blockX = Math.round(current.x / 32);
+        int blockY = Math.round(current.y / 32);
 
         DungeonObject nextTile = dungeonBlocks.getObjectType(blockX + (int) dx, blockY + (int) dy);
-        if (nextTile == null) {
-            return;
-        }
-        if (nextTile.isBlock) {
-            return;
-        }
+
+        if (nextTile == null) return;
+        if (nextTile.isBlock) return;
+
         target.x = (float) Math.floor(nextTile.current.x);
         target.y = (float) Math.floor(nextTile.current.y);
         Vector2 tmp = new Vector2(blockX, blockY);
-        Gdx.app.log("POSITION", tmp.toString() + ":" + target.toString());
+        Gdx.app.log("POSITION", "positionInt: " + tmp.toString() + ":" + target.toString());
     }
 
     public void move() {
@@ -83,7 +84,11 @@ public abstract class MovableDungeonObject extends AnimatableDungeonObject {
             }
 
             if ((long) current.x == (long) target.x && (long) current.y == (long) target.y) {
-                state = State.IDLE;
+                if (moveDirection == null) {
+                    state = State.IDLE;
+                } else {
+                    setMoveDirection(direction);
+                }
             }
         }
     }

@@ -20,9 +20,7 @@ public class Character extends MovableDungeonObject {
         return 0;
     }
 
-    //    private static final float MOVE_SPEED = 64 * 3.0f / 60;
     private static final float MOVE_SPEED = 1;
-    private static final float DIAGONAL = MOVE_SPEED * 0.7071f;
 
     public Character() {
         image = new Texture(Gdx.files.internal("reimu.png"));
@@ -86,19 +84,19 @@ public class Character extends MovableDungeonObject {
     }
 
     public void moveLeftUp() {
-        positionMove(Direction.LEFT_UP, -DIAGONAL, DIAGONAL);
+        positionMove(Direction.LEFT_UP, -MOVE_SPEED, MOVE_SPEED);
     }
 
     public void moveRightUp() {
-        positionMove(Direction.RIGHT_UP, DIAGONAL, DIAGONAL);
+        positionMove(Direction.RIGHT_UP, MOVE_SPEED, MOVE_SPEED);
     }
 
     public void moveLeftDown() {
-        positionMove(Direction.LEFT_DOWN, -DIAGONAL, -DIAGONAL);
+        positionMove(Direction.LEFT_DOWN, -MOVE_SPEED, -MOVE_SPEED);
     }
 
     public void moveRightDown() {
-        positionMove(Direction.RIGHT_DOWN, DIAGONAL, -DIAGONAL);
+        positionMove(Direction.RIGHT_DOWN, MOVE_SPEED, -MOVE_SPEED);
     }
 
     public void moveReset() {

@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 
+import com.badlogic.gdx.Gdx;
 import com.mygdx.game.objects.DungeonObject;
 import com.mygdx.game.objects.GlassObstacle;
 import com.mygdx.game.objects.GlassTile;
@@ -8,7 +9,8 @@ import com.mygdx.game.objects.GlassTile;
 public class DungeonBlocks {
 
     private int widthBlocks = 100;
-    private int heightBlocks = 100;
+    private int heightBlocks = 30;
+    private int BLOCK_SIZE = 32;
 
     DungeonObject[][] maps;
 
@@ -20,14 +22,14 @@ public class DungeonBlocks {
         for (int x = 0; x < widthBlocks; x++) {
             for (int y = 0; y < heightBlocks; y++) {
                 int a = (int) (Math.random() * 10);
-                if (x == 0 || x == widthBlocks - 1 || y == 0 || y == heightBlocks - 1) {
-                    maps[x][y] = new GlassObstacle(x * 32, y * 32);
+                if (x == 0 || y == 0 || x == widthBlocks-1 || y == heightBlocks-1) {
+                    maps[x][y] = new GlassObstacle(x * BLOCK_SIZE, y * BLOCK_SIZE);
 
                 } else {
-                    maps[x][y] = new GlassTile(x * 32, y * 32);
+                    maps[x][y] = new GlassTile(x * BLOCK_SIZE, y * BLOCK_SIZE);
 
                 }
-                //System.out.println(maps[x][y]);
+                Gdx.app.log("POSSS", x + ":" + y);
             }
         }
     }

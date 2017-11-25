@@ -16,6 +16,7 @@ import com.mygdx.game.hud.HUD;
 import com.mygdx.game.hud.InputController;
 import com.mygdx.game.objects.Character;
 import com.mygdx.game.objects.DungeonObject;
+import com.mygdx.game.objects.MovableDungeonObject;
 
 public class Dungeon extends ScreenAdapter implements InputController.InputListener {
 
@@ -110,9 +111,9 @@ public class Dungeon extends ScreenAdapter implements InputController.InputListe
     public void createDungeonMap() {
         TiledMap map = new TiledMap();
         MapLayers layers = map.getLayers();
-        TiledMapTileLayer tiledMapTileLayer = new TiledMapTileLayer(32, 32, 32, 32);
         int widthCount = blocks.getWidthBlockCount();
         int heightCount = blocks.getHeightBlockCount();
+        TiledMapTileLayer tiledMapTileLayer = new TiledMapTileLayer(widthCount, heightCount, 32, 32);
 //        Texture tile = Resources.Textures.floor;
         for (int x = 0; x < widthCount; x++) {
             for (int y = 0; y < heightCount; y++) {
@@ -133,10 +134,12 @@ public class Dungeon extends ScreenAdapter implements InputController.InputListe
 
     @Override
     public void onTouchUp(Direction direction) {
+        MovableDungeonObject.moveDirection = null;
     }
 
     @Override
     public void onTouchMove(Direction direction) {
         character.setMoveDirection(direction);
+        Gdx.app.log("DIRECTION", direction.toString());
     }
 }
