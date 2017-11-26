@@ -13,13 +13,14 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.hud.HUD;
+import com.mygdx.game.hud.ActionController;
 import com.mygdx.game.hud.InputController;
+import com.mygdx.game.hud.Status;
 import com.mygdx.game.objects.Character;
 import com.mygdx.game.objects.DungeonObject;
-import com.mygdx.game.objects.Enemy;
 import com.mygdx.game.objects.MovableDungeonObject;
 
-public class Dungeon extends ScreenAdapter implements InputController.InputListener {
+public class Dungeon extends ScreenAdapter implements InputController.InputListener, ActionController.ActionInputListener {
 
     HUD hud = new HUD();
 
@@ -53,8 +54,11 @@ public class Dungeon extends ScreenAdapter implements InputController.InputListe
         blocks.enemy.setDungeonBlocks(blocks);
         createDungeonMap();
         InputController inputController = new InputController(this);
+        ActionController actionController = new ActionController(this);
         inputController.makePanel();
+        actionController.makePanel();
         hud.addComponent(inputController);
+        hud.addComponent(actionController);
     }
 
     @Override
@@ -144,6 +148,11 @@ public class Dungeon extends ScreenAdapter implements InputController.InputListe
     @Override
     public void onTouchMove(Direction direction) {
         character.setMoveDirection(direction);
-        Gdx.app.log("DIRECTION", direction.toString());
+//        Gdx.app.log("DIRECTION", direction.toString());
+    }
+
+    @Override
+    public void onTouchDown(Status status) {
+        character.setAction(status);
     }
 }

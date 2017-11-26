@@ -7,6 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.Direction;
+import com.mygdx.game.Dungeon;
+
+import org.lwjgl.opengl.Display;
 
 public class InputController extends HUDComponents {
 

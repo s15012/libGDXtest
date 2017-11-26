@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Direction;
 import com.mygdx.game.DungeonBlocks;
+import com.mygdx.game.hud.Status;
 
 public abstract class MovableDungeonObject extends AnimatableDungeonObject {
 
@@ -122,6 +123,14 @@ public abstract class MovableDungeonObject extends AnimatableDungeonObject {
         }
     }
 
+    public void setAction(Status status) {
+        switch (status) {
+            case ATTACK:
+                attack();
+                break;
+        }
+    }
+
     public abstract void moveLeft();
 
     public abstract void moveRight();
@@ -138,5 +147,5 @@ public abstract class MovableDungeonObject extends AnimatableDungeonObject {
 
     public abstract void moveRightDown();
 
-    public abstract void moveReset();
+    public abstract void attack();
 }

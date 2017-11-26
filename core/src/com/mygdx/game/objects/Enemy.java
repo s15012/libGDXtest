@@ -20,8 +20,6 @@ public class Enemy extends MovableDungeonObject {
 
     private static final float MOVE_SPEED = 1;
 
-    Character character;
-
     public Enemy() {
         image = new Texture(Gdx.files.internal("reimu.png"));
         TextureRegion[][] tmp = TextureRegion.split(image, image.getWidth() / 6, image.getHeight() / 4);
@@ -95,8 +93,7 @@ public class Enemy extends MovableDungeonObject {
     }
 
     @Override
-    public void moveReset() {
-
+    public void attack() {
     }
 
     public void draw(Batch batch, float imageStateTime) {
@@ -109,11 +106,11 @@ public class Enemy extends MovableDungeonObject {
 
     @Override
     public void dispose() {
-
     }
 
     @Override
     public int getIdentifier() {
         return 0;
     }
+
 }

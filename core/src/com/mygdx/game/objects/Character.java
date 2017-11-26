@@ -99,8 +99,8 @@ public class Character extends MovableDungeonObject {
         positionMove(Direction.RIGHT_DOWN, MOVE_SPEED, -MOVE_SPEED);
     }
 
-    public void moveReset() {
-        current.set(0, 0);
+    public void attack() {
+        Gdx.app.log("ATTACK", "攻撃できてるよ！！");
     }
 
     public void draw(Batch batch, float imageStateTime) {
