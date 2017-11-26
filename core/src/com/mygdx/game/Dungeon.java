@@ -16,6 +16,7 @@ import com.mygdx.game.hud.HUD;
 import com.mygdx.game.hud.InputController;
 import com.mygdx.game.objects.Character;
 import com.mygdx.game.objects.DungeonObject;
+import com.mygdx.game.objects.Enemy;
 import com.mygdx.game.objects.MovableDungeonObject;
 
 public class Dungeon extends ScreenAdapter implements InputController.InputListener {
@@ -30,6 +31,7 @@ public class Dungeon extends ScreenAdapter implements InputController.InputListe
     DungeonBlocks blocks = new DungeonBlocks();
 
     Character character = new Character();
+
 
     private float imageStateTime = 0;
 
@@ -48,6 +50,7 @@ public class Dungeon extends ScreenAdapter implements InputController.InputListe
     private void create() {
         blocks.makeMaps();
         character.setDungeonBlocks(blocks);
+        blocks.enemy.setDungeonBlocks(blocks);
         createDungeonMap();
         InputController inputController = new InputController(this);
         inputController.makePanel();
@@ -74,6 +77,7 @@ public class Dungeon extends ScreenAdapter implements InputController.InputListe
         super.dispose();
         hud.dispose();
         character.dispose();
+        blocks.enemy.dispose();
     }
 
     private void draw() {
@@ -83,6 +87,7 @@ public class Dungeon extends ScreenAdapter implements InputController.InputListe
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         character.draw(batch, imageStateTime);
+        blocks.enemy.draw(batch, imageStateTime);
         batch.end();
         hud.draw(batch, imageStateTime);
 
@@ -114,7 +119,6 @@ public class Dungeon extends ScreenAdapter implements InputController.InputListe
         int widthCount = blocks.getWidthBlockCount();
         int heightCount = blocks.getHeightBlockCount();
         TiledMapTileLayer tiledMapTileLayer = new TiledMapTileLayer(widthCount, heightCount, 32, 32);
-//        Texture tile = Resources.Textures.floor;
         for (int x = 0; x < widthCount; x++) {
             for (int y = 0; y < heightCount; y++) {
                 DungeonObject object = blocks.getObjectType(x, y);

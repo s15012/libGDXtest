@@ -3,6 +3,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.mygdx.game.objects.DungeonObject;
+import com.mygdx.game.objects.Enemy;
 import com.mygdx.game.objects.GlassObstacle;
 import com.mygdx.game.objects.GlassTile;
 
@@ -13,6 +14,8 @@ public class DungeonBlocks {
     private int BLOCK_SIZE = 32;
 
     DungeonObject[][] maps;
+
+    Enemy enemy = new Enemy();
 
     public DungeonBlocks() {
         maps = new DungeonObject[widthBlocks][heightBlocks];
