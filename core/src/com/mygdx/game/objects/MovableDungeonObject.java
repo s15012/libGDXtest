@@ -33,6 +33,7 @@ public abstract class MovableDungeonObject extends AnimatableDungeonObject {
     private float moveY = 32;
 
     public static Direction moveDirection;
+    DungeonObject nextTile;
 
     @Override
     public void initPosition(float x, float y) {
@@ -59,7 +60,7 @@ public abstract class MovableDungeonObject extends AnimatableDungeonObject {
         int blockX = Math.round(current.x / 32);
         int blockY = Math.round(current.y / 32);
 
-        DungeonObject nextTile = dungeonBlocks.getObjectType(blockX + (int) dx, blockY + (int) dy);
+        nextTile = dungeonBlocks.getObjectType(blockX + (int) dx, blockY + (int) dy);
 
         if (nextTile == null) return;
         if (nextTile.isBlock) return;
@@ -126,7 +127,32 @@ public abstract class MovableDungeonObject extends AnimatableDungeonObject {
     public void setAction(Status status) {
         switch (status) {
             case ATTACK:
+                if (direction != null) {
+                    Gdx.app.log("ATTACK_LOG", direction.toString());
+                }
+
                 attack();
+                break;
+        }
+    }
+
+    public boolean checkedNextBlock(Direction direction) {
+        switch (direction) {
+            case UP:
+                break;
+            case DOWN:
+                break;
+            case LEFT:
+                break;
+            case RIGHT:
+                break;
+            case LEFT_UP:
+                break;
+            case RIGHT_UP:
+                break;
+            case LEFT_DOWN:
+                break;
+            case RIGHT_DOWN:
                 break;
         }
     }

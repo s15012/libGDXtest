@@ -21,6 +21,7 @@ public class Enemy extends MovableDungeonObject {
     private static final float MOVE_SPEED = 1;
 
     public Enemy() {
+        isBlock = true;
         image = new Texture(Gdx.files.internal("reimu.png"));
         TextureRegion[][] tmp = TextureRegion.split(image, image.getWidth() / 6, image.getHeight() / 4);
         TextureRegion[] split = new TextureRegion[IMAGE_COLS * IMAGE_ROWS];
@@ -53,7 +54,7 @@ public class Enemy extends MovableDungeonObject {
 
         sprite = new Sprite(image);
 
-        initPosition(220 / 2, 220 / 2);
+        initPosition(96, 96);
     }
 
     public Vector2 getCurrentPosition() {

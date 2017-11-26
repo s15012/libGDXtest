@@ -102,6 +102,7 @@ public class Character extends MovableDungeonObject {
     public void attack() {
         Gdx.app.log("ATTACK", "攻撃できてるよ！！");
     }
+    //TODO 攻撃時のアニメーション(Directionも必要), 攻撃時のダメージ判定(攻撃方向にEnemyがいる場合はEnemyにダメージ)
 
     public void draw(Batch batch, float imageStateTime) {
         float width = 32;
