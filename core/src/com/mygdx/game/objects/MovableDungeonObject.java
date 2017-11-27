@@ -127,35 +127,19 @@ public abstract class MovableDungeonObject extends AnimatableDungeonObject {
     public void setAction(Status status) {
         switch (status) {
             case ATTACK:
-                if (direction != null) {
-                    Gdx.app.log("ATTACK_LOG", direction.toString());
-                }
-
                 attack();
                 break;
         }
     }
 
-    public boolean checkedNextBlock(Direction direction) {
-        switch (direction) {
-            case UP:
-                break;
-            case DOWN:
-                break;
-            case LEFT:
-                break;
-            case RIGHT:
-                break;
-            case LEFT_UP:
-                break;
-            case RIGHT_UP:
-                break;
-            case LEFT_DOWN:
-                break;
-            case RIGHT_DOWN:
-                break;
-        }
-    }
+    /**
+     * TODO 攻撃→Dirチェック→DirNextBlockチェック→Enemyチェック
+     * positionMoveみたいにnextTileの取得
+     * 攻撃アニメーションはAnimationsに入れる？（問題はStateとかの判別してるから攻撃アニメーションのクラスとかの方がいいか・・・
+     * Enemyがいる場合はダメージ判定、他は空振りで。（とりあえずアニメーションは確定動作
+     *
+     */
+
 
     public abstract void moveLeft();
 
