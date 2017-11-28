@@ -4,14 +4,27 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.mygdx.game.Direction;
 
 public class Animations {
-    protected Animation left;
-    protected Animation right;
-    protected Animation up;
-    protected Animation down;
-    protected Animation leftUp;
-    protected Animation leftDown;
-    protected Animation rightUp;
-    protected Animation rightDown;
+    protected final Animation left;
+    protected final Animation right;
+    protected final Animation up;
+    protected final Animation down;
+    protected final Animation leftUp;
+    protected final Animation leftDown;
+    protected final Animation rightUp;
+    protected final Animation rightDown;
+
+    public Animations(Animation leftUp, Animation up, Animation rightUp,
+                      Animation left, Animation right,
+                      Animation leftDown, Animation down, Animation rightDown) {
+        this.left = left;
+        this.right = right;
+        this.up = up;
+        this.down = down;
+        this.leftUp = leftUp;
+        this.leftDown = leftDown;
+        this.rightUp = rightUp;
+        this.rightDown = rightDown;
+    }
 
     public Animation convertDirectionToAnimation(Direction direction) {
         switch (direction) {

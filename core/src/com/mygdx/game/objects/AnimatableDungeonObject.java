@@ -6,8 +6,12 @@ import com.mygdx.game.Direction;
 
 public abstract class AnimatableDungeonObject extends DungeonObject {
 
-    Animations idleAnimation = new Animations();
+    Animations idleAnimation;
     protected Direction direction = Direction.DOWN;
+
+    public AnimatableDungeonObject(int x, int y, int tiledX, int tiledY, int index) {
+        super(x, y, tiledX, tiledY, index);
+    }
 
     protected Animation currentAnim() {
         return idleAnimation.convertDirectionToAnimation(direction);

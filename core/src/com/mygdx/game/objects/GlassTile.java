@@ -6,7 +6,9 @@ import com.mygdx.game.Resources;
 
 public class GlassTile extends DungeonObject {
 
-    public GlassTile(float x, float y) {
+
+    public GlassTile(int x, int y, int tiledX, int tiledY, int index) {
+        super(x, y, tiledX, tiledY, index);
         image = Resources.Textures.floor;
         initPosition(x, y);
     }

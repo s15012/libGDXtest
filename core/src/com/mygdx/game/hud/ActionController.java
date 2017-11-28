@@ -6,10 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-/**
- * Created by arakaki on 2017/11/26.
- */
-
 public class ActionController extends HUDComponents {
 
     private ActionInputListener actionListener;

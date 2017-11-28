@@ -4,10 +4,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.DrawComponent;
+import com.mygdx.game.objects.findingpath.TiledNode;
 
-public abstract class DungeonObject implements DrawComponent {
+public abstract class DungeonObject extends TiledNode implements DrawComponent {
 
-    boolean isBlock = false;
+    private DungeonObject(int x, int y, int index) {
+        super(x, y, index);
+    }
+
+    public DungeonObject(int x, int y, int tiledX, int tiledY, int index) {
+        super(tiledX, tiledY, index);
+    }
 
     public Texture getImage() {
         return image;
@@ -26,6 +33,11 @@ public abstract class DungeonObject implements DrawComponent {
     public void initPosition(float x, float y) {
         current.x = x;
         current.y = y;
+    }
+
+
+    public Vector2 getCurrentPosition() {
+        return current;
     }
 
 }

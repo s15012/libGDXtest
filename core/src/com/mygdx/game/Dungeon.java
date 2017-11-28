@@ -12,13 +12,13 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.mygdx.game.hud.HUD;
 import com.mygdx.game.hud.ActionController;
+import com.mygdx.game.hud.HUD;
 import com.mygdx.game.hud.InputController;
 import com.mygdx.game.hud.Status;
-import com.mygdx.game.objects.Character;
 import com.mygdx.game.objects.DungeonObject;
-import com.mygdx.game.objects.MovableDungeonObject;
+import com.mygdx.game.objects.characters.Reimu;
+import com.mygdx.game.objects.enemies.TestEnemy;
 
 public class Dungeon extends ScreenAdapter implements InputController.InputListener, ActionController.ActionInputListener {
 
@@ -29,10 +29,7 @@ public class Dungeon extends ScreenAdapter implements InputController.InputListe
     FitViewport viewPort;
     TiledMapRenderer renderer;
 
-    DungeonBlocks blocks = new DungeonBlocks();
-
-    Character character = new Character();
-
+    DungeonBlockManager dungeonBlockManager = new DungeonBlockManager();
 
     private float imageStateTime = 0;
 
@@ -49,9 +46,9 @@ public class Dungeon extends ScreenAdapter implements InputController.InputListe
 
 
     private void create() {
-        blocks.makeMaps();
-        character.setDungeonBlocks(blocks);
-        blocks.enemy.setDungeonBlocks(blocks);
+        dungeonBlockManager.makeMaps();
+        dungeonBlockManager.setMainCharacter(new Reimu());
+        dungeonBlockManager.addEnemy(new TestEnemy());
         createDungeonMap();
         InputController inputController = new InputController(this);
         ActionController actionController = new ActionController(this);
@@ -66,7 +63,7 @@ public class Dungeon extends ScreenAdapter implements InputController.InputListe
         super.render(delta);
         updateTimeState();
         updateCamera();
-        character.move();
+        dungeonBlockManager.moveAllObject();
         draw();
     }
 
@@ -80,8 +77,7 @@ public class Dungeon extends ScreenAdapter implements InputController.InputListe
     public void dispose() {
         super.dispose();
         hud.dispose();
-        character.dispose();
-        blocks.enemy.dispose();
+        dungeonBlockManager.dispose();
     }
 
     private void draw() {
@@ -90,8 +86,7 @@ public class Dungeon extends ScreenAdapter implements InputController.InputListe
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        character.draw(batch, imageStateTime);
-        blocks.enemy.draw(batch, imageStateTime);
+        dungeonBlockManager.draw(batch, imageStateTime);
         batch.end();
         hud.draw(batch, imageStateTime);
 
@@ -99,7 +94,7 @@ public class Dungeon extends ScreenAdapter implements InputController.InputListe
 
     private void updateCamera() {
         camera.update();
-        Vector2 pos = character.getCurrentPosition();
+        Vector2 pos = dungeonBlockManager.getMainCharacter().getCurrentPosition();
         camera.position.x = pos.x;
         camera.position.y = pos.y;
 
@@ -120,12 +115,12 @@ public class Dungeon extends ScreenAdapter implements InputController.InputListe
     public void createDungeonMap() {
         TiledMap map = new TiledMap();
         MapLayers layers = map.getLayers();
-        int widthCount = blocks.getWidthBlockCount();
-        int heightCount = blocks.getHeightBlockCount();
+        int widthCount = dungeonBlockManager.getWidthBlockCount();
+        int heightCount = dungeonBlockManager.getHeightBlockCount();
         TiledMapTileLayer tiledMapTileLayer = new TiledMapTileLayer(widthCount, heightCount, 32, 32);
         for (int x = 0; x < widthCount; x++) {
             for (int y = 0; y < heightCount; y++) {
-                DungeonObject object = blocks.getObjectType(x, y);
+                DungeonObject object = dungeonBlockManager.getObjectType(x, y);
                 TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
                 cell.setTile(new com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile(new TextureRegion(object.getImage())));
                 tiledMapTileLayer.setCell(x, y, cell);
@@ -137,22 +132,21 @@ public class Dungeon extends ScreenAdapter implements InputController.InputListe
 
     @Override
     public void onTouchDown(Direction direction) {
-        character.setMoveDirection(direction);
+        dungeonBlockManager.getMainCharacter().setMoveDirection(direction);
     }
 
     @Override
     public void onTouchUp(Direction direction) {
-        MovableDungeonObject.moveDirection = null;
+        dungeonBlockManager.getMainCharacter().moveReset();
     }
 
     @Override
     public void onTouchMove(Direction direction) {
-        character.setMoveDirection(direction);
-//        Gdx.app.log("DIRECTION", direction.toString());
+        dungeonBlockManager.getMainCharacter().setMoveDirection(direction);
     }
 
     @Override
     public void onTouchDown(Status status) {
-        character.setAction(status);
+        dungeonBlockManager.getMainCharacter().setAction(status);
     }
 }

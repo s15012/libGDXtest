@@ -5,7 +5,8 @@ import com.mygdx.game.Resources;
 
 public class GlassObstacle extends DungeonObject {
 
-    public GlassObstacle(float x, float y) {
+    public GlassObstacle(int x, int y, int tiledX, int tiledY, int index) {
+        super(x, y, tiledX, tiledY, index);
         image = Resources.Textures.obstacle;
         initPosition(x, y);
         isBlock = true;
