@@ -95,21 +95,6 @@ public abstract class MovableDungeonObject extends AnimatableDungeonObject {
         Gdx.app.log("positiomMOVE", target.toString());
     }
 
-
-//    public void checkedNextTiled(Direction direction, float dx, float dy) {
-//        this.direction = direction;
-//
-//        Vector2 block = dungeonBlockManager.vectorToBlockVector(current);
-//        nextTile = dungeonBlockManager.getObjectType((int) block.x + (int) dx, (int) block.y + (int) dy);
-//
-//        target.x = (float) Math.floor(nextTile.current.x);
-//        target.y = (float) Math.floor(nextTile.current.y);
-//
-//        Vector2 ec = testEnemy.getCurrentPosition();
-//
-//        Gdx.app.log("EnemyPos", ec.toString());
-//    }
-
     public boolean move() {
         return move(false);
     }
@@ -172,72 +157,7 @@ public abstract class MovableDungeonObject extends AnimatableDungeonObject {
         }
     }
 
-//    public void setAction(Status status) {
-//        switch (status) {
-//            case ATTACK:
-//                setNextDirection(direction);
-//                judgeEnemy();
-//                Gdx.app.log("POS???", nextTile.current.toString());
-//
-//                if (isEnemy) {
-//                    Gdx.app.log("ENEMY:", "IS TRUE");
-//                } else {
-//                    Gdx.app.log("ENEMY:", "IS FALSE");
-//                }
-//
-//                attack();
-//                break;
-//        }
-//    }
-
-//    public void setNextDirection(Direction direction) {
-//        switch (direction) {
-//            case LEFT_UP:
-//                checkLeftUp();
-//                break;
-//            case UP:
-//                checkUp();
-//                break;
-//            case RIGHT_UP:
-//                checkRightUp();
-//                break;
-//            case LEFT:
-//                checkLeft();
-//                break;
-//            case RIGHT:
-//                checkRight();
-//                break;
-//            case LEFT_DOWN:
-//                checkLeftDown();
-//                break;
-//            case DOWN:
-//                checkDown();
-//                break;
-//            case RIGHT_DOWN:
-//                checkRightDown();
-//                break;
-//        }
-//    }
-//
-//    public void judgeEnemy() {
-//        //TODO Enemy判定
-//        Vector2 nextPosition = nextTile.getCurrentPosition();
-//        if ( == nextPosition) {
-//            isEnemy = true;
-//        } else {
-//            isEnemy = false;
-//        }
-//    }
-
     public abstract void attack();
-
-    /**
-     * TODO 攻撃→Dirチェック→DirNextBlockチェック→Enemyチェック
-     * positionMoveみたいにnextTileの取得
-     * 攻撃アニメーションはAnimationsに入れる？（問題はStateとかの判別してるから攻撃アニメーションのクラスとかの方がいいか・・・
-     * Enemyがいる場合はダメージ判定、他は空振りで。（とりあえずアニメーションは確定動作
-     */
-
 
     public abstract void moveLeft();
 
