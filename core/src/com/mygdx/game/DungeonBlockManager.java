@@ -1,9 +1,11 @@
 package com.mygdx.game;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.hud.Status;
 import com.mygdx.game.objects.Character;
 import com.mygdx.game.objects.DungeonObject;
 import com.mygdx.game.objects.GlassObstacle;
@@ -23,13 +25,13 @@ public class DungeonBlockManager implements DrawComponent {
 
     TiledGraph maps;
 
-
     Character mainCharacter;
     Array<Character> characters = new Array<Character>();
 
     Array<Enemy> enemies = new Array<Enemy>();
 
     PathFinder finder;
+    boolean isEnemy = false;
 
     public DungeonBlockManager() {
         maps = new TiledGraph(widthBlocks, heightBlocks);
@@ -107,6 +109,73 @@ public class DungeonBlockManager implements DrawComponent {
         finder = new PathFinder(this.maps);
     }
 
+    public void checkedNextTiled(Direction direction, float dx, float dy) {
+        Direction attackDirection = direction;
+
+        Vector2 characterBlock = vectorToBlockVector(mainCharacter.getCurrentPosition());
+        DungeonObject nextTile = getObjectType((int) characterBlock.x + (int) dx, (int) characterBlock.y + (int) dy);
+        Vector2 target = vectorToBlockVector(nextTile.getCurrentPosition());
+
+        for (Enemy enemy : enemies) {
+            Vector2 enemyCurrent = enemy.getCurrentPosition();
+            Vector2 enemyBlock = vectorToBlockVector(enemyCurrent);
+
+            judgeEnemy(target, enemyBlock);
+        }
+    }
+
+    public void setAction(Status status) { //1
+        switch (status) {
+            case ATTACK:
+                setNextDirection(mainCharacter.getCharacterDir());
+                break;
+        }
+    }
+
+    public void setNextDirection(Direction direction) { //3
+        switch (direction) {
+            case LEFT_UP:
+                mainCharacter.checkLeftUp();
+                break;
+            case UP:
+                mainCharacter.checkUp();
+                break;
+            case RIGHT_UP:
+                mainCharacter.checkRightUp();
+                break;
+            case LEFT:
+                mainCharacter.checkLeft();
+                break;
+            case RIGHT:
+                mainCharacter.checkRight();
+                break;
+            case LEFT_DOWN:
+                mainCharacter.checkLeftDown();
+                break;
+            case DOWN:
+                mainCharacter.checkDown();
+                break;
+            case RIGHT_DOWN:
+                mainCharacter.checkRightDown();
+                break;
+        }
+    }
+
+    public void judgeEnemy(Vector2 targetPosition, Vector2 enemyPosition) {
+        //TODO Enemy複数いたら攻撃動作が複数回になる
+        Gdx.app.log("target", targetPosition.toString());
+        Gdx.app.log("enemyCurrent", enemyPosition.toString());
+
+        if (targetPosition.x == enemyPosition.x && targetPosition.y == enemyPosition.y) {
+            isEnemy = true;
+        } else {
+            isEnemy = false;
+        }
+
+        mainCharacter.attack();
+        Gdx.app.log("judge", isEnemy + "attack");
+    }
+
     public int getWidthBlockCount() {
         return widthBlocks;
     }
@@ -121,7 +190,6 @@ public class DungeonBlockManager implements DrawComponent {
 
         return new Vector2(blockX, blockY);
     }
-
 
     public DungeonObject getObjectType(int x, int y) {
         if (x < 0 || x >= getWidthBlockCount()) {

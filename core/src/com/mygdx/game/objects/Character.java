@@ -77,35 +77,35 @@ public abstract class Character extends MovableDungeonObject {
 
 
     public void checkLeft() {
-        checkedNextTiled(Direction.LEFT, -getMoveSpeedX(), 0);
+        dungeonBlockManager.checkedNextTiled(Direction.LEFT, -getMoveSpeedX(), 0);
     }
 
     public void checkRight() {
-        checkedNextTiled(Direction.RIGHT, getMoveSpeedX(), 0);
+        dungeonBlockManager.checkedNextTiled(Direction.RIGHT, getMoveSpeedX(), 0);
     }
 
     public void checkUp() {
-        checkedNextTiled(Direction.UP, 0, getMoveSpeedY());
+        dungeonBlockManager.checkedNextTiled(Direction.UP, 0, getMoveSpeedY());
     }
 
     public void checkDown() {
-        checkedNextTiled(Direction.DOWN, 0, -getMoveSpeedY());
+        dungeonBlockManager.checkedNextTiled(Direction.DOWN, 0, -getMoveSpeedY());
     }
 
     public void checkLeftUp() {
-        checkedNextTiled(Direction.LEFT_UP, -getMoveSpeedX(), getMoveSpeedY());
+        dungeonBlockManager.checkedNextTiled(Direction.LEFT_UP, -getMoveSpeedX(), getMoveSpeedY());
     }
 
     public void checkRightUp() {
-        checkedNextTiled(Direction.RIGHT_UP, getMoveSpeedX(), getMoveSpeedY());
+        dungeonBlockManager.checkedNextTiled(Direction.RIGHT_UP, getMoveSpeedX(), getMoveSpeedY());
     }
 
     public void checkLeftDown() {
-        checkedNextTiled(Direction.LEFT_DOWN, -getMoveSpeedX(), -getMoveSpeedY());
+        dungeonBlockManager.checkedNextTiled(Direction.LEFT_DOWN, -getMoveSpeedX(), -getMoveSpeedY());
     }
 
     public void checkRightDown() {
-        checkedNextTiled(Direction.RIGHT_DOWN, getMoveSpeedX(), -getMoveSpeedY());
+        dungeonBlockManager.checkedNextTiled(Direction.RIGHT_DOWN, getMoveSpeedX(), -getMoveSpeedY());
     }
 
     public void attack() {

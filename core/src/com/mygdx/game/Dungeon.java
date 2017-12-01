@@ -147,6 +147,6 @@ public class Dungeon extends ScreenAdapter implements InputController.InputListe
 
     @Override
     public void onTouchDown(Status status) {
-        dungeonBlockManager.getMainCharacter().setAction(status);
+        dungeonBlockManager.setAction(status);
     }
 }
