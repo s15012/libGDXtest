@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.Direction;
-
-import java.lang.reflect.Array;
+import com.mygdx.game.objects.characters.CharaParams;
+import com.mygdx.game.objects.enemies.EnemyParams;
 
 
 public abstract class Character extends MovableDungeonObject {
@@ -76,45 +76,71 @@ public abstract class Character extends MovableDungeonObject {
     }
 
 
+
+
     public void checkLeft() {
-        dungeonBlockManager.checkedNextTiled(-getMoveSpeedX(), 0);
+        dungeonBlockManager.checkNextAttack(-getMoveSpeedX(), 0);
     }
 
     public void checkRight() {
-        dungeonBlockManager.checkedNextTiled(getMoveSpeedX(), 0);
+        dungeonBlockManager.checkNextAttack(getMoveSpeedX(), 0);
     }
 
     public void checkUp() {
-        dungeonBlockManager.checkedNextTiled(0, getMoveSpeedY());
+        dungeonBlockManager.checkNextAttack(0, getMoveSpeedY());
     }
 
     public void checkDown() {
-        dungeonBlockManager.checkedNextTiled(0, -getMoveSpeedY());
+        dungeonBlockManager.checkNextAttack(0, -getMoveSpeedY());
     }
 
     public void checkLeftUp() {
-        dungeonBlockManager.checkedNextTiled(-getMoveSpeedX(), getMoveSpeedY());
+        dungeonBlockManager.checkNextAttack(-getMoveSpeedX(), getMoveSpeedY());
     }
 
     public void checkRightUp() {
-        dungeonBlockManager.checkedNextTiled(getMoveSpeedX(), getMoveSpeedY());
+        dungeonBlockManager.checkNextAttack(getMoveSpeedX(), getMoveSpeedY());
     }
 
     public void checkLeftDown() {
-        dungeonBlockManager.checkedNextTiled(-getMoveSpeedX(), -getMoveSpeedY());
+        dungeonBlockManager.checkNextAttack(-getMoveSpeedX(), -getMoveSpeedY());
     }
 
     public void checkRightDown() {
-        dungeonBlockManager.checkedNextTiled(getMoveSpeedX(), -getMoveSpeedY());
+        dungeonBlockManager.checkNextAttack(getMoveSpeedX(), -getMoveSpeedY());
+    }
+
+    public void setCharaParams(int maxHp, int lv, int str, int def, int exp) {
+        CharaParams CharaParams = new CharaParams();
+        CharaParams.setMaxHp(maxHp);
+        CharaParams.setHp(CharaParams.getMaxHp());
+        CharaParams.setLv(lv);
+        CharaParams.setStr(str);
+        CharaParams.setDef(def);
+        CharaParams.setExp(exp);
+    }
+
+    public void setEnemyParams(int maxHp, int str, int def, int xp) {
+        EnemyParams params = new EnemyParams();
+        params.setMaxHp(maxHp);
+        params.setHp(params.getMaxHp());
+        params.setStr(str);
+        params.setDef(def);
+        params.setXp(xp);
     }
 
     public void attack(com.badlogic.gdx.utils.Array<Boolean> judges) {
 
         for (boolean judge : judges) {
-
+            if (judge) {
+                Gdx.app.log("ATTACK", "ダメージ与えた");
+            } else {
+                Gdx.app.log("ATTACK", "空振り");
+            }
         }
-        Gdx.app.log("ATTACK", "攻撃できてるよ！！");
     }
-    //TODO 攻撃時のアニメーション(Directionも必要), 攻撃時のダメージ判定(攻撃方向にEnemyがいる場合はEnemyにダメージ)
 
+    public int damage() {
+
+    }
 }

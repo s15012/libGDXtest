@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.hud.Attacks;
 import com.mygdx.game.hud.Status;
 import com.mygdx.game.objects.Character;
 import com.mygdx.game.objects.DungeonObject;
@@ -30,8 +31,9 @@ public class DungeonBlockManager implements DrawComponent {
 
     Array<Enemy> enemies = new Array<Enemy>();
 
+    Array<Vector2> targetList;
+
     PathFinder finder;
-    boolean isEnemy = false;
 
     public DungeonBlockManager() {
         maps = new TiledGraph(widthBlocks, heightBlocks);
@@ -109,36 +111,66 @@ public class DungeonBlockManager implements DrawComponent {
         finder = new PathFinder(this.maps);
     }
 
-    public void checkedNextTiled(float dx, float dy) {
-        Vector2 characterBlock = vectorToBlockVector(mainCharacter.getCurrentPosition());
-        DungeonObject nextTile = getObjectType((int) characterBlock.x + (int) dx, (int) characterBlock.y + (int) dy);
-        Vector2 targetBlock = vectorToBlockVector(nextTile.getCurrentPosition());
+//    public void checkNextAttack(float dx, float dy) {
+//        Vector2 characterBlock = vectorToBlockVector(mainCharacter.getCurrentPosition());
+//        DungeonObject nextTile = getObjectType((int) characterBlock.x + (int) dx, (int) characterBlock.y + (int) dy);
+//        Vector2 targetBlock = vectorToBlockVector(nextTile.getCurrentPosition());
+//        Array<Boolean> enemiesJudge = new Array<Boolean>();
+//
+//        for (Enemy enemy : enemies) {
+//            Vector2 enemyCurrent = enemy.getCurrentPosition();
+//            Vector2 enemyBlock = vectorToBlockVector(enemyCurrent);
+//
+//            if (targetBlock.x == enemyBlock.x && targetBlock.y == enemyBlock.y) {
+//                enemiesJudge.add(true);
+//
+//            } else {
+//                enemiesJudge.add(false);
+//            }
+//        }
+//
+//        mainCharacter.attack(enemiesJudge);
+        //マスを指定するメソッド
+        //攻撃の処理をするメソッドに分ける
+//    }
 
-        Array<Boolean> enemiesJudge = new Array<Boolean>();
+    public void attackRange(int preX, int initX, int preY, int initY) {
 
-        for (Enemy enemy : enemies) {
-            Vector2 enemyCurrent = enemy.getCurrentPosition();
-            Vector2 enemyBlock = vectorToBlockVector(enemyCurrent);
+        targetList = new Array<Vector2>();
 
-            if (targetBlock.x == enemyBlock.x && targetBlock.y == enemyBlock.y) {
-                enemiesJudge.add(true);
-            } else {
-                enemiesJudge.add(false);
+        for (int x = preX; x >= initX; x++) {
+            for (int y = preY; y >= initY; y++) {
+                Vector2 tmp = new Vector2(x, y);
+                targetList.add(tmp);
             }
         }
 
-        mainCharacter.attack(enemiesJudge);
+        checkTarget();
     }
 
-    public void setAction(Status status) { //1
-        switch (status) {
-            case ATTACK:
-                setNextDirection(mainCharacter.getCharacterDir());
-                break;
+    public void checkTarget() {
+        for (Vector2 target : targetList) {
+            for (Enemy enemy : enemies) {
+                Vector2 enemyCurrent = enemy.getCurrentPosition();
+                Vector2 enemyBlock = vectorToBlockVector(enemyCurrent);
+
+                if (target.x == enemyBlock.x && target.y == enemyBlock.y) {
+                    //enemy
+                }
+            }
         }
     }
 
-    public void setNextDirection(Direction direction) { //3
+
+
+
+    public void setAction(Status status) {
+        switch (status) {
+            case ATTACK:
+        }
+    }
+
+    public void setNextDirection(Direction direction) {
         switch (direction) {
             case LEFT_UP:
                 mainCharacter.checkLeftUp();
@@ -167,22 +199,16 @@ public class DungeonBlockManager implements DrawComponent {
         }
     }
 
-    public void judgeEnemy(Vector2 targetPosition, Vector2 enemyPosition) {
-        //TODO Enemy複数いたら攻撃動作が複数回になる
-        Gdx.app.log("target", targetPosition.toString());
-        Gdx.app.log("enemyCurrent", enemyPosition.toString());
-
-        if (targetPosition.x == enemyPosition.x && targetPosition.y == enemyPosition.y) {
-            isEnemy = true;
-        } else {
-            isEnemy = false;
-        }
-
-
-
-        mainCharacter.attack();
-        Gdx.app.log("judge", isEnemy + "attack");
+    public void setDamage() {
     }
+//    public void judgeEnemy(Vector2 targetPosition, Vector2 enemyPosition) {
+//        if (targetPosition.x == enemyPosition.x && targetPosition.y == enemyPosition.y) {
+//            isEnemy = true;
+//        } else {
+//            isEnemy = false;
+//        }
+//        mainCharacter.attack();
+//    }
 
     public int getWidthBlockCount() {
         return widthBlocks;

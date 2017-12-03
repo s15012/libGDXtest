@@ -19,6 +19,7 @@ public class Reimu extends Character {
     public Reimu() {
         super();
         initPosition(220 / 2, 220 / 2);
+        setCharaParams(100, 1, 30, 20, 0);
     }
 
     @Override

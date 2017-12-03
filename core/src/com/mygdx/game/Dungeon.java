@@ -44,7 +44,6 @@ public class Dungeon extends ScreenAdapter implements InputController.InputListe
         create();
     }
 
-
     private void create() {
         dungeonBlockManager.makeMaps();
         dungeonBlockManager.setMainCharacter(new Reimu());

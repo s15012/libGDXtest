@@ -18,6 +18,7 @@ public class TestEnemy extends Enemy {
     public TestEnemy() {
         super();
         initPosition(96, 96);
+        setEnemyParams(100, 10, 10, 10);
     }
 
     @Override
@@ -82,6 +83,14 @@ public class TestEnemy extends Enemy {
         batch.draw((TextureRegion) currentAnim().getKeyFrame(imageStateTime, true),
                 current.x, current.y,
                 width, height);
+    }
+
+    public void setParams() {
+        EnemyParams EnemyParams = new EnemyParams();
+        EnemyParams.setMaxHp(100);
+        EnemyParams.setHp(EnemyParams.getMaxHp());
+        EnemyParams.setStr(10);
+        EnemyParams.setDef(10);
     }
 
     @Override
