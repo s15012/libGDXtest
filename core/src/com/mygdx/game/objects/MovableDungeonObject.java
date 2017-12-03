@@ -27,7 +27,6 @@ public abstract class MovableDungeonObject extends AnimatableDungeonObject {
     Animations moveAnimation;
 
     Vector2 target = new Vector2();
-    TestEnemy testEnemy;
 
     public enum State { //状態
         IDLE,

@@ -95,4 +95,8 @@ public class Reimu extends Character {
         return MOVE_SPEED;
     }
 
+    @Override
+    public void attack() {
+
+    }
 }

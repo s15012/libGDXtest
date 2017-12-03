@@ -109,19 +109,25 @@ public class DungeonBlockManager implements DrawComponent {
         finder = new PathFinder(this.maps);
     }
 
-    public void checkedNextTiled(Direction direction, float dx, float dy) {
-        Direction attackDirection = direction;
-
+    public void checkedNextTiled(float dx, float dy) {
         Vector2 characterBlock = vectorToBlockVector(mainCharacter.getCurrentPosition());
         DungeonObject nextTile = getObjectType((int) characterBlock.x + (int) dx, (int) characterBlock.y + (int) dy);
-        Vector2 target = vectorToBlockVector(nextTile.getCurrentPosition());
+        Vector2 targetBlock = vectorToBlockVector(nextTile.getCurrentPosition());
+
+        Array<Boolean> enemiesJudge = new Array<Boolean>();
 
         for (Enemy enemy : enemies) {
             Vector2 enemyCurrent = enemy.getCurrentPosition();
             Vector2 enemyBlock = vectorToBlockVector(enemyCurrent);
 
-            judgeEnemy(target, enemyBlock);
+            if (targetBlock.x == enemyBlock.x && targetBlock.y == enemyBlock.y) {
+                enemiesJudge.add(true);
+            } else {
+                enemiesJudge.add(false);
+            }
         }
+
+        mainCharacter.attack(enemiesJudge);
     }
 
     public void setAction(Status status) { //1
@@ -171,6 +177,8 @@ public class DungeonBlockManager implements DrawComponent {
         } else {
             isEnemy = false;
         }
+
+
 
         mainCharacter.attack();
         Gdx.app.log("judge", isEnemy + "attack");

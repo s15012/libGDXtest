@@ -6,10 +6,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.Direction;
 
+import java.lang.reflect.Array;
+
 
 public abstract class Character extends MovableDungeonObject {
-
-
     @Override
     public int getIdentifier() {
         return 0;
@@ -77,38 +77,42 @@ public abstract class Character extends MovableDungeonObject {
 
 
     public void checkLeft() {
-        dungeonBlockManager.checkedNextTiled(Direction.LEFT, -getMoveSpeedX(), 0);
+        dungeonBlockManager.checkedNextTiled(-getMoveSpeedX(), 0);
     }
 
     public void checkRight() {
-        dungeonBlockManager.checkedNextTiled(Direction.RIGHT, getMoveSpeedX(), 0);
+        dungeonBlockManager.checkedNextTiled(getMoveSpeedX(), 0);
     }
 
     public void checkUp() {
-        dungeonBlockManager.checkedNextTiled(Direction.UP, 0, getMoveSpeedY());
+        dungeonBlockManager.checkedNextTiled(0, getMoveSpeedY());
     }
 
     public void checkDown() {
-        dungeonBlockManager.checkedNextTiled(Direction.DOWN, 0, -getMoveSpeedY());
+        dungeonBlockManager.checkedNextTiled(0, -getMoveSpeedY());
     }
 
     public void checkLeftUp() {
-        dungeonBlockManager.checkedNextTiled(Direction.LEFT_UP, -getMoveSpeedX(), getMoveSpeedY());
+        dungeonBlockManager.checkedNextTiled(-getMoveSpeedX(), getMoveSpeedY());
     }
 
     public void checkRightUp() {
-        dungeonBlockManager.checkedNextTiled(Direction.RIGHT_UP, getMoveSpeedX(), getMoveSpeedY());
+        dungeonBlockManager.checkedNextTiled(getMoveSpeedX(), getMoveSpeedY());
     }
 
     public void checkLeftDown() {
-        dungeonBlockManager.checkedNextTiled(Direction.LEFT_DOWN, -getMoveSpeedX(), -getMoveSpeedY());
+        dungeonBlockManager.checkedNextTiled(-getMoveSpeedX(), -getMoveSpeedY());
     }
 
     public void checkRightDown() {
-        dungeonBlockManager.checkedNextTiled(Direction.RIGHT_DOWN, getMoveSpeedX(), -getMoveSpeedY());
+        dungeonBlockManager.checkedNextTiled(getMoveSpeedX(), -getMoveSpeedY());
     }
 
-    public void attack() {
+    public void attack(com.badlogic.gdx.utils.Array<Boolean> judges) {
+
+        for (boolean judge : judges) {
+
+        }
         Gdx.app.log("ATTACK", "攻撃できてるよ！！");
     }
     //TODO 攻撃時のアニメーション(Directionも必要), 攻撃時のダメージ判定(攻撃方向にEnemyがいる場合はEnemyにダメージ)
