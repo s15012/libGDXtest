@@ -33,6 +33,7 @@ public class ActionController extends HUDComponents {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 ActionController.this.touchDown(Status.ATTACK);
+                Gdx.app.log("ATTACK BUTTON", "IS TAPed");
                 return true;
             }
         });
@@ -58,6 +59,6 @@ public class ActionController extends HUDComponents {
     }
 
     public interface ActionInputListener {
-        public void onTouchDown(Status status);
+        void onTouchDown(Status status);
     }
 }

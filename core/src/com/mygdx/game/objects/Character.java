@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Direction;
 import com.mygdx.game.objects.characters.CharaParams;
 import com.mygdx.game.objects.enemies.EnemyParams;
@@ -78,36 +79,36 @@ public abstract class Character extends MovableDungeonObject {
 
 
 
-    public void checkLeft() {
-        dungeonBlockManager.checkNextAttack(-getMoveSpeedX(), 0);
+    public void checkLeft(Vector2 currentBlock) {
+        dungeonBlockManager.attackRange((int)currentBlock.x - 1, (int)currentBlock.x - 1, (int)currentBlock.y, (int)currentBlock.y);
     }
 
-    public void checkRight() {
-        dungeonBlockManager.checkNextAttack(getMoveSpeedX(), 0);
+    public void checkRight(Vector2 currentBlock) {
+        dungeonBlockManager.attackRange((int)currentBlock.x + 1, (int)currentBlock.x + 1, (int)currentBlock.y, (int)currentBlock.y);
     }
 
-    public void checkUp() {
-        dungeonBlockManager.checkNextAttack(0, getMoveSpeedY());
+    public void checkUp(Vector2 currentBlock) {
+        dungeonBlockManager.attackRange((int)currentBlock.x, (int)currentBlock.x, (int)currentBlock.y + 1, (int)(currentBlock.y + 1));
     }
 
-    public void checkDown() {
-        dungeonBlockManager.checkNextAttack(0, -getMoveSpeedY());
+    public void checkDown(Vector2 currentBlock) {
+        dungeonBlockManager.attackRange((int)currentBlock.x, (int)currentBlock.x, (int)currentBlock.y - 1, (int)currentBlock.y -1);
     }
 
-    public void checkLeftUp() {
-        dungeonBlockManager.checkNextAttack(-getMoveSpeedX(), getMoveSpeedY());
+    public void checkLeftUp(Vector2 currentBlock) {
+        dungeonBlockManager.attackRange((int)currentBlock.x - 1, (int)currentBlock.x - 1, (int)currentBlock.y + 1, (int)currentBlock.y + 1);
     }
 
-    public void checkRightUp() {
-        dungeonBlockManager.checkNextAttack(getMoveSpeedX(), getMoveSpeedY());
+    public void checkRightUp(Vector2 currentBlock) {
+        dungeonBlockManager.attackRange((int)currentBlock.x + 1, (int)currentBlock.x + 1, (int)currentBlock.y + 1, (int)currentBlock.y + 1);
     }
 
-    public void checkLeftDown() {
-        dungeonBlockManager.checkNextAttack(-getMoveSpeedX(), -getMoveSpeedY());
+    public void checkLeftDown(Vector2 currentBlock) {
+        dungeonBlockManager.attackRange((int)currentBlock.x - 1, (int)currentBlock.x - 1, (int)currentBlock.y - 1, (int)currentBlock.y - 1);
     }
 
-    public void checkRightDown() {
-        dungeonBlockManager.checkNextAttack(getMoveSpeedX(), -getMoveSpeedY());
+    public void checkRightDown(Vector2 currentBlock) {
+        dungeonBlockManager.attackRange((int)currentBlock.x + 1, (int)currentBlock.x + 1, (int)currentBlock.y - 1, (int)currentBlock.y - 1);
     }
 
     public void setCharaParams(int maxHp, int lv, int str, int def, int exp) {
@@ -129,18 +130,11 @@ public abstract class Character extends MovableDungeonObject {
         params.setXp(xp);
     }
 
-    public void attack(com.badlogic.gdx.utils.Array<Boolean> judges) {
-
-        for (boolean judge : judges) {
-            if (judge) {
-                Gdx.app.log("ATTACK", "ダメージ与えた");
-            } else {
-                Gdx.app.log("ATTACK", "空振り");
-            }
-        }
+    public void attack(Direction direction) {
+        dungeonBlockManager.setNextDirection(direction);
     }
-
-    public int damage() {
-
-    }
+//
+//    public int damage() {
+//
+//    }
 }

@@ -100,4 +100,5 @@ public class Reimu extends Character {
     public void attack() {
 
     }
+
 }

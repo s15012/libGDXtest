@@ -130,16 +130,16 @@ public class DungeonBlockManager implements DrawComponent {
 //        }
 //
 //        mainCharacter.attack(enemiesJudge);
-        //マスを指定するメソッド
-        //攻撃の処理をするメソッドに分ける
+    //マスを指定するメソッド
+    //攻撃の処理をするメソッドに分ける
 //    }
 
     public void attackRange(int preX, int initX, int preY, int initY) {
 
         targetList = new Array<Vector2>();
 
-        for (int x = preX; x >= initX; x++) {
-            for (int y = preY; y >= initY; y++) {
+        for (int x = preX; x <= initX; x++) {
+            for (int y = preY; y <= initY; y++) {
                 Vector2 tmp = new Vector2(x, y);
                 targetList.add(tmp);
             }
@@ -156,45 +156,50 @@ public class DungeonBlockManager implements DrawComponent {
 
                 if (target.x == enemyBlock.x && target.y == enemyBlock.y) {
                     //enemy
+                    Gdx.app.log("TARGET IS TRUE", "目標 (" + enemyBlock.toString() + ") を攻撃しました。");
+                } else {
+                    Gdx.app.log("TARGET IS FALSE", "(" + target.toString() + ") に目標はいませんでした。");
                 }
             }
         }
     }
 
 
-
-
     public void setAction(Status status) {
         switch (status) {
             case ATTACK:
+//                setNextDirection(mainCharacter.getCharacterDir());
+                Gdx.app.log("ATTACK", "setAction:Case Attack!!");
+                mainCharacter.attack(mainCharacter.getCharacterDir());
         }
     }
 
     public void setNextDirection(Direction direction) {
+        Vector2 currentBlock = vectorToBlockVector(mainCharacter.getCurrentPosition());
         switch (direction) {
             case LEFT_UP:
-                mainCharacter.checkLeftUp();
+                mainCharacter.checkLeftUp(currentBlock);
                 break;
             case UP:
-                mainCharacter.checkUp();
+                mainCharacter.checkUp(currentBlock);
                 break;
             case RIGHT_UP:
-                mainCharacter.checkRightUp();
+                mainCharacter.checkRightUp(currentBlock);
                 break;
             case LEFT:
-                mainCharacter.checkLeft();
+                mainCharacter.checkLeft(currentBlock);
                 break;
             case RIGHT:
-                mainCharacter.checkRight();
+                mainCharacter.checkRight(currentBlock);
                 break;
             case LEFT_DOWN:
-                mainCharacter.checkLeftDown();
+                mainCharacter.checkLeftDown(currentBlock);
                 break;
             case DOWN:
-                mainCharacter.checkDown();
+                mainCharacter.checkDown(currentBlock);
                 break;
             case RIGHT_DOWN:
-                mainCharacter.checkRightDown();
+                mainCharacter.checkRightDown(currentBlock);
                 break;
         }
     }

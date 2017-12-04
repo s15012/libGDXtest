@@ -6,6 +6,7 @@ package com.mygdx.game.hud;
 
 public enum Attacks {
     NORMAL,
+    STRAIGHT,
     ARROUND_NUMBER,
     CROSS
 
