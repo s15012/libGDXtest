@@ -174,21 +174,21 @@ public abstract class MovableDungeonObject extends AnimatableDungeonObject {
 
     public abstract void moveRightDown();
 //
-//    public abstract void checkLeft();
+//    public abstract void attackLeft();
 //
-//    public abstract void checkRight();
+//    public abstract void attackRight();
 //
-//    public abstract void checkUp();
+//    public abstract void attackUp();
 //
-//    public abstract void checkDown();
+//    public abstract void attackDown();
 //
-//    public abstract void checkLeftUp();
+//    public abstract void attackLeftUp();
 //
-//    public abstract void checkRightUp();
+//    public abstract void attackRightUp();
 //
-//    public abstract void checkLeftDown();
+//    public abstract void attackLeftDown();
 //
-//    public abstract void checkRightDown();
+//    public abstract void attackRightDown();
 
     public void moveReset() {
         moveDirection = null;

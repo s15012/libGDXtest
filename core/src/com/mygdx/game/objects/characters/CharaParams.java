@@ -1,17 +1,19 @@
 package com.mygdx.game.objects.characters;
 
+import com.badlogic.gdx.utils.Array;
+
 /**
  * Created by arakaki on 2017/12/03.
  */
 
-public class CharaParams {
-    int maxHp;
-    int hp;
-    int lv;
-    int str;
-    int def;
-    int exp;
+public abstract class CharaParams {
 
+    private int maxHp;
+    private int hp;
+    private int lv;
+    private int str;
+    private int def;
+    private int exp;
 
     public int getMaxHp() {
         return maxHp;
@@ -60,6 +62,4 @@ public class CharaParams {
     public void setExp(int exp) {
         this.exp = exp;
     }
-
-
 }

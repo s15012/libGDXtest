@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.mygdx.game.hud.Attacks;
 import com.mygdx.game.hud.Status;
 import com.mygdx.game.objects.Character;
 import com.mygdx.game.objects.DungeonObject;
@@ -145,10 +144,10 @@ public class DungeonBlockManager implements DrawComponent {
             }
         }
 
-        checkTarget();
+        checkTarget(targetList);
     }
 
-    public void checkTarget() {
+    public void checkTarget(Array<Vector2> targetList) {
         for (Vector2 target : targetList) {
             for (Enemy enemy : enemies) {
                 Vector2 enemyCurrent = enemy.getCurrentPosition();
@@ -157,6 +156,7 @@ public class DungeonBlockManager implements DrawComponent {
                 if (target.x == enemyBlock.x && target.y == enemyBlock.y) {
                     //enemy
                     Gdx.app.log("TARGET IS TRUE", "目標 (" + enemyBlock.toString() + ") を攻撃しました。");
+                    Gdx.app.log("ENEMY DAMAGE", String.valueOf(damageCalc(mainCharacter, enemy)));
                 } else {
                     Gdx.app.log("TARGET IS FALSE", "(" + target.toString() + ") に目標はいませんでした。");
                 }
@@ -168,8 +168,6 @@ public class DungeonBlockManager implements DrawComponent {
     public void setAction(Status status) {
         switch (status) {
             case ATTACK:
-//                setNextDirection(mainCharacter.getCharacterDir());
-                Gdx.app.log("ATTACK", "setAction:Case Attack!!");
                 mainCharacter.attack(mainCharacter.getCharacterDir());
         }
     }
@@ -178,33 +176,48 @@ public class DungeonBlockManager implements DrawComponent {
         Vector2 currentBlock = vectorToBlockVector(mainCharacter.getCurrentPosition());
         switch (direction) {
             case LEFT_UP:
-                mainCharacter.checkLeftUp(currentBlock);
+                mainCharacter.attackLeftUp(currentBlock);
                 break;
             case UP:
-                mainCharacter.checkUp(currentBlock);
+                mainCharacter.attackUp(currentBlock);
                 break;
             case RIGHT_UP:
-                mainCharacter.checkRightUp(currentBlock);
+                mainCharacter.attackRightUp(currentBlock);
                 break;
             case LEFT:
-                mainCharacter.checkLeft(currentBlock);
+                mainCharacter.attackLeft(currentBlock);
                 break;
             case RIGHT:
-                mainCharacter.checkRight(currentBlock);
+                mainCharacter.attackRight(currentBlock);
                 break;
             case LEFT_DOWN:
-                mainCharacter.checkLeftDown(currentBlock);
+                mainCharacter.attackLeftDown(currentBlock);
                 break;
             case DOWN:
-                mainCharacter.checkDown(currentBlock);
+                mainCharacter.attackDown(currentBlock);
                 break;
             case RIGHT_DOWN:
-                mainCharacter.checkRightDown(currentBlock);
+                mainCharacter.attackRightDown(currentBlock);
                 break;
         }
     }
 
-    public void setDamage() {
+    public int damageCalc(Character character, Enemy enemy) {
+        //ガバガバコードなう
+        // Lv, maxHp, hp, str, def, exp
+//        Array<Integer> getCharaParam = character.getCharaParams();
+//        int charaStr = getCharaParam.get(3);
+//
+//        // maxHp, hp, str, def, xp
+//        Array<Integer> getEnemyParam = enemy.getEnemyParams();
+//        int enemyHp = getEnemyParam.get(1);
+//        int enemyDef = getEnemyParam.get(3);
+//
+//        int damage = charaStr / enemyDef;
+//        int enemyPostHp = enemyHp - damage;
+//
+//
+        return 0;
     }
 //    public void judgeEnemy(Vector2 targetPosition, Vector2 enemyPosition) {
 //        if (targetPosition.x == enemyPosition.x && targetPosition.y == enemyPosition.y) {

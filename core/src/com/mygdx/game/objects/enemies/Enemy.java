@@ -17,16 +17,6 @@ public abstract class Enemy extends Character {
     }
 
     @Override
-    public void attack() {
-    }
-
-
-    @Override
-    public void dispose() {
-
-    }
-
-    @Override
     public int getIdentifier() {
         return 0;
     }

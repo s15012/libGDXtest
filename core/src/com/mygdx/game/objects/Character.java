@@ -5,12 +5,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Direction;
 import com.mygdx.game.objects.characters.CharaParams;
 import com.mygdx.game.objects.enemies.EnemyParams;
 
 
 public abstract class Character extends MovableDungeonObject {
+
+    CharaParams charaParams;
+    EnemyParams enemyParams;
+
     @Override
     public int getIdentifier() {
         return 0;
@@ -24,6 +29,13 @@ public abstract class Character extends MovableDungeonObject {
         this.idleAnimation = initIdleAnimations(splitedTextures);
         sprite = initCharacterSprite(image);
     }
+
+//
+//    public abstract Texture initAttackTexture();
+//    public abstract TextureRegion[] getAttackSplit(Texture texture);
+//    public abstract Sprite initActionSprite(Texture texture);
+//    public abstract Actions initActions(TextureRegion[] actionTextures);
+//
 
     public abstract Texture initCaracterTexture();
 
@@ -44,6 +56,7 @@ public abstract class Character extends MovableDungeonObject {
 
     public abstract float getMoveSpeedY();
 
+    //キャラ動作
     public void moveLeft() {
         positionMove(Direction.LEFT, -getMoveSpeedX(), 0);
     }
@@ -76,59 +89,88 @@ public abstract class Character extends MovableDungeonObject {
         positionMove(Direction.RIGHT_DOWN, getMoveSpeedX(), -getMoveSpeedY());
     }
 
-
-
-
-    public void checkLeft(Vector2 currentBlock) {
+    //攻撃動作()
+    public void attackLeft(Vector2 currentBlock) {
         dungeonBlockManager.attackRange((int)currentBlock.x - 1, (int)currentBlock.x - 1, (int)currentBlock.y, (int)currentBlock.y);
     }
 
-    public void checkRight(Vector2 currentBlock) {
+    public void attackRight(Vector2 currentBlock) {
         dungeonBlockManager.attackRange((int)currentBlock.x + 1, (int)currentBlock.x + 1, (int)currentBlock.y, (int)currentBlock.y);
     }
 
-    public void checkUp(Vector2 currentBlock) {
+    public void attackUp(Vector2 currentBlock) {
         dungeonBlockManager.attackRange((int)currentBlock.x, (int)currentBlock.x, (int)currentBlock.y + 1, (int)(currentBlock.y + 1));
     }
 
-    public void checkDown(Vector2 currentBlock) {
+    public void attackDown(Vector2 currentBlock) {
         dungeonBlockManager.attackRange((int)currentBlock.x, (int)currentBlock.x, (int)currentBlock.y - 1, (int)currentBlock.y -1);
     }
 
-    public void checkLeftUp(Vector2 currentBlock) {
+    public void attackLeftUp(Vector2 currentBlock) {
         dungeonBlockManager.attackRange((int)currentBlock.x - 1, (int)currentBlock.x - 1, (int)currentBlock.y + 1, (int)currentBlock.y + 1);
     }
 
-    public void checkRightUp(Vector2 currentBlock) {
+    public void attackRightUp(Vector2 currentBlock) {
         dungeonBlockManager.attackRange((int)currentBlock.x + 1, (int)currentBlock.x + 1, (int)currentBlock.y + 1, (int)currentBlock.y + 1);
     }
 
-    public void checkLeftDown(Vector2 currentBlock) {
+    public void attackLeftDown(Vector2 currentBlock) {
         dungeonBlockManager.attackRange((int)currentBlock.x - 1, (int)currentBlock.x - 1, (int)currentBlock.y - 1, (int)currentBlock.y - 1);
     }
 
-    public void checkRightDown(Vector2 currentBlock) {
+    public void attackRightDown(Vector2 currentBlock) {
         dungeonBlockManager.attackRange((int)currentBlock.x + 1, (int)currentBlock.x + 1, (int)currentBlock.y - 1, (int)currentBlock.y - 1);
     }
 
-    public void setCharaParams(int maxHp, int lv, int str, int def, int exp) {
-        CharaParams CharaParams = new CharaParams();
-        CharaParams.setMaxHp(maxHp);
-        CharaParams.setHp(CharaParams.getMaxHp());
-        CharaParams.setLv(lv);
-        CharaParams.setStr(str);
-        CharaParams.setDef(def);
-        CharaParams.setExp(exp);
-    }
+    //
+//    public void setCharaParams(int lv, int maxHp, int str, int def, int exp) {
+//        charaParams = new CharaParams();
+//        charaParams.setLv(lv);
+//        charaParams.setMaxHp(maxHp);
+//        charaParams.setHp(maxHp);
+//        charaParams.setStr(str);
+//        charaParams.setDef(def);
+//        charaParams.setExp(exp);
+//    }
+//
+//    public Array<Integer> getCharaParams() {
+//        Array<Integer> charaParamList = new Array<Integer>();
+//        charaParamList.add(charaParams.getLv());
+//        charaParamList.add(charaParams.getMaxHp());
+//        charaParamList.add(charaParams.getHp());
+//        charaParamList.add(charaParams.getStr());
+//        charaParamList.add(charaParams.getDef());
+//        charaParamList.add(charaParams.getExp());
+//
+//        return charaParamList;
+//    }
+//
+//    public void setEnemyParams(int maxHp, int str, int def, int xp) {
+//        enemyParams = new EnemyParams();
+//        enemyParams.setMaxHp(maxHp);
+//        enemyParams.setHp(enemyParams.getMaxHp());
+//        enemyParams.setStr(str);
+//        enemyParams.setDef(def);
+//        enemyParams.setXp(xp);
+//    }
+//
+//    public Array<Integer> getEnemyParams() {
+//        Array<Integer> enemyParamList = new Array<Integer>();
+//        enemyParamList.add(enemyParams.getMaxHp());
+//        enemyParamList.add(enemyParams.getHp());
+//        enemyParamList.add(enemyParams.getStr());
+//        enemyParamList.add(enemyParams.getDef());
+//        enemyParamList.add(enemyParams.getXp());
+//
+//        return enemyParamList;
+//    }
+    //
 
-    public void setEnemyParams(int maxHp, int str, int def, int xp) {
-        EnemyParams params = new EnemyParams();
-        params.setMaxHp(maxHp);
-        params.setHp(params.getMaxHp());
-        params.setStr(str);
-        params.setDef(def);
-        params.setXp(xp);
-    }
+
+
+
+
+
 
     public void attack(Direction direction) {
         dungeonBlockManager.setNextDirection(direction);

@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.objects.Action;
+import com.mygdx.game.objects.Actions;
 import com.mygdx.game.objects.Animations;
 import com.mygdx.game.objects.Character;
 
@@ -19,13 +21,45 @@ public class Reimu extends Character {
     public Reimu() {
         super();
         initPosition(220 / 2, 220 / 2);
-        setCharaParams(100, 1, 30, 20, 0);
+//        setCharaParams(100, 1, 30, 20, 0);
     }
 
     @Override
     public Texture initCaracterTexture() {
         return new Texture(Gdx.files.internal("reimu.png"));
     }
+//
+//    @Override
+//    public Texture initAttackTexture() { return new Texture(Gdx.files.internal("attackEfect.png")); }
+//
+//    @Override
+//    public TextureRegion[] getAttackSplit(Texture texture) {
+//        TextureRegion[][] attackTmp = TextureRegion.split(texture, texture.getWidth() / 5, texture.getHeight() / 2);
+//        TextureRegion[] attackSplit = new TextureRegion[5 * 2];
+//        int index = 0;
+//
+//        for (int i = 0; i < 2; i++) {
+//            for (int j = 0; j < 5; j++) {
+//                attackSplit[index++] = attackTmp[i][j];
+//            }
+//        }
+//        return attackSplit;
+//    }
+//
+//    @Override
+//    public Sprite initActionSprite(Texture texture) {
+//        return new Sprite(texture);
+//    }
+//
+//    @Override
+//    public Actions initActions(TextureRegion[] actionTextures) {
+//        Animation attack = new Animation(0.1f,
+//                actionTextures[0], actionTextures[1], actionTextures[2], actionTextures[3],
+//                actionTextures[4], actionTextures[5], actionTextures[6], actionTextures[7],
+//                actionTextures[8], actionTextures[9]);
+//
+//        return new Actions(attack);
+//    }
 
     @Override
     public Sprite initCharacterSprite(Texture texture) {
