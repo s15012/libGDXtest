@@ -5,16 +5,18 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
+//import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Direction;
-import com.mygdx.game.objects.characters.CharaParams;
-import com.mygdx.game.objects.enemies.EnemyParams;
-
 
 public abstract class Character extends MovableDungeonObject {
 
-    CharaParams charaParams;
-    EnemyParams enemyParams;
+    private int lv;
+    private int maxHp;
+    private int hp;
+    private int str;
+    private int def;
+    private int exp;
+    private int xp;
 
     @Override
     public int getIdentifier() {
@@ -122,61 +124,75 @@ public abstract class Character extends MovableDungeonObject {
         dungeonBlockManager.attackRange((int)currentBlock.x + 1, (int)currentBlock.x + 1, (int)currentBlock.y - 1, (int)currentBlock.y - 1);
     }
 
-    //
-//    public void setCharaParams(int lv, int maxHp, int str, int def, int exp) {
-//        charaParams = new CharaParams();
-//        charaParams.setLv(lv);
-//        charaParams.setMaxHp(maxHp);
-//        charaParams.setHp(maxHp);
-//        charaParams.setStr(str);
-//        charaParams.setDef(def);
-//        charaParams.setExp(exp);
-//    }
-//
-//    public Array<Integer> getCharaParams() {
-//        Array<Integer> charaParamList = new Array<Integer>();
-//        charaParamList.add(charaParams.getLv());
-//        charaParamList.add(charaParams.getMaxHp());
-//        charaParamList.add(charaParams.getHp());
-//        charaParamList.add(charaParams.getStr());
-//        charaParamList.add(charaParams.getDef());
-//        charaParamList.add(charaParams.getExp());
-//
-//        return charaParamList;
-//    }
-//
-//    public void setEnemyParams(int maxHp, int str, int def, int xp) {
-//        enemyParams = new EnemyParams();
-//        enemyParams.setMaxHp(maxHp);
-//        enemyParams.setHp(enemyParams.getMaxHp());
-//        enemyParams.setStr(str);
-//        enemyParams.setDef(def);
-//        enemyParams.setXp(xp);
-//    }
-//
-//    public Array<Integer> getEnemyParams() {
-//        Array<Integer> enemyParamList = new Array<Integer>();
-//        enemyParamList.add(enemyParams.getMaxHp());
-//        enemyParamList.add(enemyParams.getHp());
-//        enemyParamList.add(enemyParams.getStr());
-//        enemyParamList.add(enemyParams.getDef());
-//        enemyParamList.add(enemyParams.getXp());
-//
-//        return enemyParamList;
-//    }
-    //
-
-
-
-
-
-
-
     public void attack(Direction direction) {
         dungeonBlockManager.setNextDirection(direction);
     }
-//
-//    public int damage() {
-//
-//    }
+
+    /**
+     *
+     * @param lv レベル
+     * @param maxHp 最大HP
+     * @param str　力（攻撃力）
+     * @param def　守（防御力）
+     * @param exp　総取得経験値
+     * @param xp　経験値
+     */
+    public abstract void setParameter(int lv, int maxHp, int str, int def, int exp, int xp);
+
+    public int getLv() {
+        return lv;
+    }
+
+    public void setLv(int lv) {
+        this.lv = lv;
+    }
+
+    public int getMaxHp() {
+        return maxHp;
+    }
+
+    public void setMaxHp(int maxHp) {
+        this.maxHp = maxHp;
+    }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    public int getStr() {
+        return str;
+    }
+
+    public void setStr(int str) {
+        this.str = str;
+    }
+
+    public int getDef() {
+        return def;
+    }
+
+    public void setDef(int def) {
+        this.def = def;
+    }
+
+    public int getExp() {
+        return exp;
+    }
+
+    public void setExp(int exp) {
+        this.exp = exp;
+    }
+
+    public int getXp() {
+        return xp;
+    }
+
+    public void setXp(int xp) {
+        this.xp = xp;
+    }
+
 }

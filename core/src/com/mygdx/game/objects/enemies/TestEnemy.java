@@ -18,7 +18,7 @@ public class TestEnemy extends Enemy {
     public TestEnemy() {
         super();
         initPosition(96, 96);
-//        setEnemyParams(100, 10, 10, 10);
+        setParameter(1, 10, 1, 1, 0, 1);
     }
 
     @Override
@@ -85,14 +85,6 @@ public class TestEnemy extends Enemy {
                 width, height);
     }
 
-//    public void setEnemyParams() {
-//        EnemyParams EnemyParams = new EnemyParams();
-//        EnemyParams.setMaxHp(100);
-//        EnemyParams.setHp(EnemyParams.getMaxHp());
-//        EnemyParams.setStr(10);
-//        EnemyParams.setDef(10);
-//    }
-
     @Override
     public float getMoveSpeedX() {
         return MOVE_SPEED;
@@ -101,6 +93,16 @@ public class TestEnemy extends Enemy {
     @Override
     public float getMoveSpeedY() {
         return MOVE_SPEED;
+    }
+
+    @Override
+    public void setParameter(int lv, int maxHp, int str, int def, int exp, int xp) {
+        this.setLv(lv);
+        this.setMaxHp(maxHp);
+        this.setHp(maxHp);
+        this.setStr(str);
+        this.setDef(def);
+        this.setXp(xp);
     }
 
     @Override

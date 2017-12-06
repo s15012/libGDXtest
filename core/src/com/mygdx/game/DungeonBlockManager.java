@@ -154,9 +154,8 @@ public class DungeonBlockManager implements DrawComponent {
                 Vector2 enemyBlock = vectorToBlockVector(enemyCurrent);
 
                 if (target.x == enemyBlock.x && target.y == enemyBlock.y) {
-                    //enemy
                     Gdx.app.log("TARGET IS TRUE", "目標 (" + enemyBlock.toString() + ") を攻撃しました。");
-                    Gdx.app.log("ENEMY DAMAGE", String.valueOf(damageCalc(mainCharacter, enemy)));
+                    Gdx.app.log("ENEMY DAMAGE", "enemyに" + String.valueOf(damageCalc(mainCharacter, enemy)) + "のダメージを与えた。");
                 } else {
                     Gdx.app.log("TARGET IS FALSE", "(" + target.toString() + ") に目標はいませんでした。");
                 }
@@ -174,6 +173,7 @@ public class DungeonBlockManager implements DrawComponent {
 
     public void setNextDirection(Direction direction) {
         Vector2 currentBlock = vectorToBlockVector(mainCharacter.getCurrentPosition());
+
         switch (direction) {
             case LEFT_UP:
                 mainCharacter.attackLeftUp(currentBlock);
@@ -203,21 +203,18 @@ public class DungeonBlockManager implements DrawComponent {
     }
 
     public int damageCalc(Character character, Enemy enemy) {
-        //ガバガバコードなう
-        // Lv, maxHp, hp, str, def, exp
-//        Array<Integer> getCharaParam = character.getCharaParams();
-//        int charaStr = getCharaParam.get(3);
-//
-//        // maxHp, hp, str, def, xp
-//        Array<Integer> getEnemyParam = enemy.getEnemyParams();
-//        int enemyHp = getEnemyParam.get(1);
-//        int enemyDef = getEnemyParam.get(3);
-//
-//        int damage = charaStr / enemyDef;
-//        int enemyPostHp = enemyHp - damage;
-//
-//
-        return 0;
+        int charaStr = character.getStr();
+
+        int enemyHp = enemy.getHp();
+        int enemyDef = enemy.getDef();
+
+        //計算式は今のとこてきとー
+        int damage = charaStr / enemyDef ;
+
+        enemy.setHp(enemyHp - damage);
+        Gdx.app.log("postHP", "ENEMYのHPは(" + enemy.getHp() + ")になりました");
+
+        return damage;
     }
 //    public void judgeEnemy(Vector2 targetPosition, Vector2 enemyPosition) {
 //        if (targetPosition.x == enemyPosition.x && targetPosition.y == enemyPosition.y) {
@@ -251,6 +248,7 @@ public class DungeonBlockManager implements DrawComponent {
         if (y < 0 || y >= getHeightBlockCount()) {
             return null;
         }
+
         return (DungeonObject) this.maps.getNode(x, y);
     }
 
@@ -259,6 +257,7 @@ public class DungeonBlockManager implements DrawComponent {
         for (Character character : characters) {
             character.draw(batch, stateTime);
         }
+
         for (Enemy enemy : enemies) {
             enemy.draw(batch, stateTime);
         }
@@ -269,6 +268,7 @@ public class DungeonBlockManager implements DrawComponent {
         for (Character character : characters) {
             character.dispose();
         }
+
         for (Enemy enemy : enemies) {
             enemy.dispose();
         }

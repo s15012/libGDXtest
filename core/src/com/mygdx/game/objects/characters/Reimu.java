@@ -7,8 +7,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.objects.Action;
-import com.mygdx.game.objects.Actions;
 import com.mygdx.game.objects.Animations;
 import com.mygdx.game.objects.Character;
 
@@ -21,7 +19,7 @@ public class Reimu extends Character {
     public Reimu() {
         super();
         initPosition(220 / 2, 220 / 2);
-//        setCharaParams(100, 1, 30, 20, 0);
+        setParameter(1, 10, 1, 1, 0, 0);
     }
 
     @Override
@@ -128,6 +126,16 @@ public class Reimu extends Character {
     @Override
     public float getMoveSpeedY() {
         return MOVE_SPEED;
+    }
+
+    @Override
+    public void setParameter(int lv, int maxHp, int str, int def, int exp, int xp) {
+        this.setLv(lv);
+        this.setMaxHp(maxHp);
+        this.setHp(maxHp);
+        this.setStr(str);
+        this.setDef(def);
+        this.setExp(exp);
     }
 
     @Override
