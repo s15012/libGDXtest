@@ -13,6 +13,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.hud.ActionController;
+import com.mygdx.game.hud.DungeonStatusMessage;
 import com.mygdx.game.hud.HUD;
 import com.mygdx.game.hud.InputController;
 import com.mygdx.game.hud.Status;
@@ -51,10 +52,12 @@ public class Dungeon extends ScreenAdapter implements InputController.InputListe
         createDungeonMap();
         InputController inputController = new InputController(this);
         ActionController actionController = new ActionController(this);
+        DungeonStatusMessage dungeonStatusMessage = new DungeonStatusMessage(dungeonBlockManager);
         inputController.makePanel();
         actionController.makePanel();
         hud.addComponent(inputController);
         hud.addComponent(actionController);
+        hud.addComponent(dungeonStatusMessage);
     }
 
     @Override

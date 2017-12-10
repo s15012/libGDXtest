@@ -61,7 +61,6 @@ public class InputController extends HUDComponents {
 
         upButton = new Image(touchPanel[0][1]);
         upButton.setBounds(leftUpButton.getX() + PANEL_SIZE, leftUpButton.getY(), PANEL_SIZE, PANEL_SIZE);
-        addActor(upButton);
         upButton.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -79,10 +78,10 @@ public class InputController extends HUDComponents {
                 InputController.this.touchDragged(Direction.UP);
             }
         });
+        addActor(upButton);
 
         rightUpButton = new Image(touchPanel[0][2]);
         rightUpButton.setBounds(upButton.getX() + PANEL_SIZE, upButton.getY(), PANEL_SIZE, PANEL_SIZE);
-        addActor(rightUpButton);
         rightUpButton.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -100,10 +99,10 @@ public class InputController extends HUDComponents {
                 InputController.this.touchDragged(Direction.RIGHT_UP);
             }
         });
+        addActor(rightUpButton);
 
         leftButton = new Image(touchPanel[1][0]);
         leftButton.setBounds(leftUpButton.getX(), leftUpButton.getY() - PANEL_SIZE, PANEL_SIZE, PANEL_SIZE);
-        addActor(leftButton);
         leftButton.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -121,10 +120,10 @@ public class InputController extends HUDComponents {
                 InputController.this.touchDragged(Direction.LEFT);
             }
         });
+        addActor(leftButton);
 
         rect = new Image(touchPanel[1][1]);
         rect.setBounds(leftButton.getX() + PANEL_SIZE, leftButton.getY(), PANEL_SIZE, PANEL_SIZE);
-        addActor(rect);
         rect.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -142,10 +141,10 @@ public class InputController extends HUDComponents {
                 //InputController.this.touchDragged(Direction.);
             }
         });
+        addActor(rect);
 
         rightButton = new Image(touchPanel[1][2]);
         rightButton.setBounds(rect.getX() + PANEL_SIZE, rect.getY(), PANEL_SIZE, PANEL_SIZE);
-        addActor(rightButton);
         rightButton.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -163,10 +162,10 @@ public class InputController extends HUDComponents {
                 InputController.this.touchDragged(Direction.RIGHT);
             }
         });
+        addActor(rightButton);
 
         leftDownButton = new Image(touchPanel[2][0]);
         leftDownButton.setBounds(leftButton.getX(), leftButton.getY() - PANEL_SIZE, PANEL_SIZE, PANEL_SIZE);
-        addActor(leftDownButton);
         leftDownButton.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -184,10 +183,10 @@ public class InputController extends HUDComponents {
                 InputController.this.touchDragged(Direction.LEFT_DOWN);
             }
         });
+        addActor(leftDownButton);
 
         downButton = new Image(touchPanel[2][1]);
         downButton.setBounds(leftDownButton.getX() + PANEL_SIZE, leftDownButton.getY(), PANEL_SIZE, PANEL_SIZE);
-        addActor(downButton);
         downButton.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -205,10 +204,10 @@ public class InputController extends HUDComponents {
                 InputController.this.touchDragged(Direction.DOWN);
             }
         });
+        addActor(downButton);
 
         rightDownButton = new Image(touchPanel[2][2]);
         rightDownButton.setBounds(downButton.getX() + PANEL_SIZE, downButton.getY(), PANEL_SIZE, PANEL_SIZE);
-        addActor(rightDownButton);
         rightDownButton.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -226,6 +225,7 @@ public class InputController extends HUDComponents {
                 InputController.this.touchDragged(Direction.RIGHT_DOWN);
             }
         });
+        addActor(rightDownButton);
 
     }
 

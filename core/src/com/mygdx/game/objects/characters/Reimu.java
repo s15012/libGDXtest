@@ -110,7 +110,7 @@ public class Reimu extends Character {
     }
 
     public void draw(Batch batch, float imageStateTime) {
-        float width = 32;
+        float width = 32; //TODO
         float height = 48;
         Vector2 current = getCurrentPosition();
         batch.draw((TextureRegion) currentAnim().getKeyFrame(imageStateTime, true),

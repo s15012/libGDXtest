@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.hud.DungeonStatusMessage;
 import com.mygdx.game.hud.Status;
 import com.mygdx.game.objects.Character;
 import com.mygdx.game.objects.DungeonObject;
@@ -212,6 +213,7 @@ public class DungeonBlockManager implements DrawComponent {
         int damage = charaStr / enemyDef ;
 
         enemy.setHp(enemyHp - damage);
+
         Gdx.app.log("postHP", "ENEMYのHPは(" + enemy.getHp() + ")になりました");
 
         return damage;

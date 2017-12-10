@@ -12,10 +12,8 @@ public class HUD implements DrawComponent {
     private ArrayList<HUDComponents> components = new ArrayList<HUDComponents>();
     private Stage stage = new Stage();
 
-
     public HUD() {
         Gdx.input.setInputProcessor(stage);
-
     }
 
 
