@@ -40,11 +40,11 @@ public abstract class Enemy extends Character {
 
     private boolean isPosition(Vector2 target, Vector2 current) {
 
-        int tX = (int) (target.x - current.x);
-        int tY = (int) (target.y - current.y);
+        int tX = (int) Math.abs(target.x - current.x);
+        int tY = (int) Math.abs(target.y - current.y);
 
-        if (tX < MOVE_RANGE && tX > -MOVE_RANGE) {
-            if (tY < MOVE_RANGE && tY > -MOVE_RANGE) {
+        if (tX < MOVE_RANGE) {
+            if (tY < MOVE_RANGE) {
                 return true;
             }
         }
@@ -89,23 +89,50 @@ public abstract class Enemy extends Character {
     }
 
     private void randomMove() {
-        int randomMath = (int) (Math.random() * 10);
-        int random = randomMath % 4;
         Direction direction = null;
-
-        if (random == 0) {
-            direction = Direction.DOWN;
-        } else if (random == 1) {
-            direction = Direction.UP;
-        } else if (random == 2) {
-            direction = Direction.LEFT;
-        } else if (random == 3) {
-            direction = Direction.RIGHT;
-        }
-
+        Vector2 currentBlockVector = getDungeonBlockManager().vectorToBlockVector(getCurrentPosition());
+        DungeonObject object;
+        do {
+            int randomMath = (int) (Math.random() * 10);
+            int random = randomMath % 4;
+            int x = 0;
+            int y = 0;
+            if (random == 0) {
+                direction = Direction.DOWN;
+                y -= 1;
+            } else if (random == 1) {
+                direction = Direction.UP;
+                y += 1;
+            } else if (random == 2) {
+                direction = Direction.LEFT;
+                x -= 1;
+            } else if (random == 3) {
+                direction = Direction.RIGHT;
+                x += 1;
+            }
+            object = getDungeonBlockManager().getObjectType((int) currentBlockVector.x + x, (int) currentBlockVector.y + y);
+        } while (object == null || object.isBlock );
 
         if (direction != null) {
             setMoveDirection(direction);
         }
+//        int randomMath = (int) (Math.random() * 10);
+//        int random = randomMath % 4;
+//        Direction direction = null;
+//
+//        if (random == 0) {
+//            direction = Direction.DOWN;
+//        } else if (random == 1) {
+//            direction = Direction.UP;
+//        } else if (random == 2) {
+//            direction = Direction.LEFT;
+//        } else if (random == 3) {
+//            direction = Direction.RIGHT;
+//        }
+//
+//
+//        if (direction != null) {
+//            setMoveDirection(direction);
+//        }
     }
 }
