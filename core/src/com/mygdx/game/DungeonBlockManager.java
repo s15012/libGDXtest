@@ -20,20 +20,20 @@ import java.util.Random;
 
 public class DungeonBlockManager implements DrawComponent {
 
-    private int widthBlocks = 50;
-    private int heightBlocks = 50;
+    private final int widthBlocks = 50;
+    private final int heightBlocks = 50;
     private final int blockSize = 32;
 
-    TiledGraph maps;
+    private TiledGraph maps;
 
-    Character mainCharacter;
-    Array<Character> characters = new Array<Character>();
+    private Character mainCharacter;
+    private Array<Character> characters = new Array<Character>();
 
-    Array<Enemy> enemies = new Array<Enemy>();
+    private Array<Enemy> enemies = new Array<Enemy>();
 
-    Array<Vector2> targetList;
+    private Array<Vector2> targetList;
 
-    PathFinder finder;
+    private PathFinder finder;
 
     public DungeonBlockManager() {
         maps = new TiledGraph(widthBlocks, heightBlocks);
@@ -59,6 +59,7 @@ public class DungeonBlockManager implements DrawComponent {
     }
 
     public Array<TiledNode> findMainCharacter(DungeonObject object) {
+        Gdx.app.log("findMainChara", String.valueOf(finder.findPath(vectorToBlockVector(mainCharacter.getTargetPosition()), vectorToBlockVector(object.getCurrentPosition()))));
         return finder.findPath(vectorToBlockVector(mainCharacter.getTargetPosition()), vectorToBlockVector(object.getCurrentPosition()));
     }
 
@@ -111,29 +112,6 @@ public class DungeonBlockManager implements DrawComponent {
         finder = new PathFinder(this.maps);
     }
 
-//    public void checkNextAttack(float dx, float dy) {
-//        Vector2 characterBlock = vectorToBlockVector(mainCharacter.getCurrentPosition());
-//        DungeonObject nextTile = getObjectType((int) characterBlock.x + (int) dx, (int) characterBlock.y + (int) dy);
-//        Vector2 targetBlock = vectorToBlockVector(nextTile.getCurrentPosition());
-//        Array<Boolean> enemiesJudge = new Array<Boolean>();
-//
-//        for (Enemy enemy : enemies) {
-//            Vector2 enemyCurrent = enemy.getCurrentPosition();
-//            Vector2 enemyBlock = vectorToBlockVector(enemyCurrent);
-//
-//            if (targetBlock.x == enemyBlock.x && targetBlock.y == enemyBlock.y) {
-//                enemiesJudge.add(true);
-//
-//            } else {
-//                enemiesJudge.add(false);
-//            }
-//        }
-//
-//        mainCharacter.attack(enemiesJudge);
-    //マスを指定するメソッド
-    //攻撃の処理をするメソッドに分ける
-//    }
-
     public void attackRange(int preX, int initX, int preY, int initY) {
 
         targetList = new Array<Vector2>();
@@ -155,10 +133,10 @@ public class DungeonBlockManager implements DrawComponent {
                 Vector2 enemyBlock = vectorToBlockVector(enemyCurrent);
 
                 if (target.x == enemyBlock.x && target.y == enemyBlock.y) {
-                    Gdx.app.log("TARGET IS TRUE", "目標 (" + enemyBlock.toString() + ") を攻撃しました。");
-                    Gdx.app.log("ENEMY DAMAGE", "enemyに" + String.valueOf(damageCalc(mainCharacter, enemy)) + "のダメージを与えた。");
+//                    Gdx.app.log("TARGET IS TRUE", "目標 (" + enemyBlock.toString() + ") を攻撃しました。");
+//                    Gdx.app.log("ENEMY DAMAGE", "enemyに" + String.valueOf(damageCalc(mainCharacter, enemy)) + "のダメージを与えた。");
                 } else {
-                    Gdx.app.log("TARGET IS FALSE", "(" + target.toString() + ") に目標はいませんでした。");
+//                    Gdx.app.log("TARGET IS FALSE", "(" + target.toString() + ") に目標はいませんでした。");
                 }
             }
         }
@@ -218,14 +196,6 @@ public class DungeonBlockManager implements DrawComponent {
 
         return damage;
     }
-//    public void judgeEnemy(Vector2 targetPosition, Vector2 enemyPosition) {
-//        if (targetPosition.x == enemyPosition.x && targetPosition.y == enemyPosition.y) {
-//            isEnemy = true;
-//        } else {
-//            isEnemy = false;
-//        }
-//        mainCharacter.attack();
-//    }
 
     public int getWidthBlockCount() {
         return widthBlocks;
